@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isla 6: Funciones - Taller de Hechizos</title>
+    <link rel="stylesheet" href="primerJ.css">
+</head>
+<body>
+    <div id="victory-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>🔮 ¡HECHIZO LANZADO! 🔮</h1>
+            <p>¡Has creado y llamado tu primera <strong>Función</strong>!</p>
+            <button id="next-level-button">Siguiente Nivel 🧙</button>
+        </div>
+    </div>
+    
+    <div id="gameover-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>💨 ¡PUF! 💨</h1>
+            <p id="gameover-reason">El hechizo se desvaneció. Revisa tu libro.</p>
+            <button id="retry-button">Intentar de Nuevo 🔄</button>
+        </div>
+    </div>
+
+    <div id="tutorial-modal" class="modal-overlay">
+        <div class="modal-content tutorial">
+            <h1>👋 ¡ISLA 6: FUNCIONES!</h1>
+            
+            <div class="tutorial-step active" data-step="1">
+                <h3>🎯 OBJETIVO</h3>
+                <p>¡Vamos a crear magia! Hoy no solo *usarás* comandos, ¡vas a *inventarlos*!</p>
+                <p>Tu misión es activar el Cristal de Poder.</p>
+            </div>
+            
+            <div class="tutorial-step" data-step="2">
+                <h3>📦 ¿QUÉ ES UNA FUNCIÓN?</h3>
+                <p>Una <strong>Función</strong> es una "receta" mágica que guarda una secuencia de comandos para usarlos más tarde.</p>
+                <p>¡Es la forma de crear tus propios comandos!</p>
+            </div>
+
+            <div class="tutorial-step" data-step="3">
+                <h3>PASO 1: DEFINIR LA FUNCIÓN</h3>
+                <p>Primero, *creamos* la receta con la palabra clave <code>function</code>. Elige un nombre para tu hechizo.</p>
+                <div class="code-example">
+                    <p>// 1. Pones los comandos que quieres guardar DENTRO de { ... }</p>
+                    <code>function hechizo_luz() {</code><br>
+                    <code>&nbsp;&nbsp;activar_runa();</code><br>
+                    <code>&nbsp;&nbsp;lanzar_energia();</code><br>
+                    <code>}</code>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="4">
+                <h3>PASO 2: LLAMAR A LA FUNCIÓN</h3>
+                <p>¡Crear la receta no hace nada! Debes *usarla* (llamarla) escribiendo su nombre con paréntesis <code>()</code>.</p>
+                <div class="code-example">
+                    <p>// Esto le dice al programa: "¡Ejecuta la receta 'hechizo_luz' AHORA!"</p>
+                    <code>hechizo_luz();</code>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="5">
+                <h3>✅ TU MISIÓN COMPLETA</h3>
+                <p>Escribe esto en tu editor:</p>
+                <div class="code-example">
+                    <p>// 1. Definir el hechizo</p>
+                    <code>function hechizo_luz() {</code><br>
+                    <code>&nbsp;&nbsp;activar_runa();</code><br>
+                    <code>&nbsp;&nbsp;lanzar_energia();</code><br>
+                    <code>}</code><br><br>
+                    <p>// 2. Llamar al hechizo</p>
+                    <code>hechizo_luz();</code>
+                </div>
+            </div>
+
+            <div class="tutorial-nav">
+                <button id="tutorial-prev" class="secondary-btn">Anterior</button>
+                <span id="tutorial-step-counter">Paso 1 / 5</span>
+                <button id="tutorial-next" class="primary-btn">Siguiente</button>
+            </div>
+            <button id="start-button" class="primary-btn hidden">¡A LA MAGIA! 💻</button>
+        </div>
+    </div>
+    <div id="game-container" class="hidden">
+        <div class="game-world">
+            <div id="pedestal">
+                <div id="crystal" class="off">CRISTAL</div>
+                <div id="rune" class="off">RUNA</div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="panel-header">
+                <h1>🧙 TALLER DE HECHIZOS</h1>
+                <div class="level-info">
+                    <span id="level-title">Nivel 6.1: 'function'</span>
+                    <div id="tries-counter">
+                        <span>💖 Vidas:</span>
+                        <span id="tries-count">3/3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mission-log-container">
+                <div class="log-header">
+                    <span>📋 LIBRO DE HECHIZOS</span>
+                    <button id="clear-log">🗑️</button>
+                </div>
+                <div id="mission-log"></div>
+            </div>
+
+            <div class="code-editor">
+                <div class="editor-header">
+                    <span>📝 PAPIRO EN BLANCO</span>
+                    <span class="editor-tips">💡 Ctrl+Enter</span>
+                </div>
+                <textarea id="code-input" placeholder="// function hechizo_luz() { ... }"></textarea>
+            </div>
+
+            <div class="action-buttons">
+                <div class="command-buttons">
+                    <button id="btn-function" class="cmd-btn">function ... () { }</button>
+                    <button id="btn-rune" class="cmd-btn">activar_runa()</button>
+                    <button id="btn-energy" class="cmd-btn">lanzar_energia()</button>
+                </div>
+                <div class="control-buttons">
+                    <button id="run-button" class="primary-btn">▶ LANZAR</button>
+                    <button id="reset-button" class="secondary-btn">🔄 REINICIAR</button>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button id="back-to-tutorial" class="help-btn">📚 VER TUTORIAL</button>
+                    <button id="back-to-map" class="map-btn">🗺️ VOLVER AL MAPA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="primerJ.js"></script>
+</body>
+</html>

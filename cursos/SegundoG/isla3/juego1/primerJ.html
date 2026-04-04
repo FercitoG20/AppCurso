@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isla 3: Condicionales - El Cofre</title>
+    <link rel="stylesheet" href="primerJ.css">
+</head>
+<body>
+    <div id="victory-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>🏆 ¡CÓDIGO PERFECTO! 🏆</h1>
+            <p>¡Tu código funcionó para AMBOS casos! ¡Has aprendido <strong>if / else</strong>!</p>
+            <button id="next-level-button">Continuar 🚀</button>
+        </div>
+    </div>
+    
+    <div id="gameover-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>💥 ¡BOOM! 💥</h1>
+            <p>¡Abriste una trampa! O ignoraste un tesoro...</p>
+            <p id="gameover-reason"></p>
+            <button id="retry-button">Intentar de Nuevo 🔄</button>
+        </div>
+    </div>
+
+    <div id="tutorial-modal" class="modal-overlay">
+        <div class="modal-content tutorial">
+            <h1>👋 ¡ISLA 3: DECISIONES!</h1>
+            
+            <div class="tutorial-step active" data-step="1">
+                <img src="https://i.imgur.com/3AGgC1v.png" alt="Cofre" width="100">
+                <h3>🎯 OBJETIVO</h3>
+                <p>Escribe un código que decida si <code>abrir_cofre()</code> o <code>ignorar_cofre()</code>.</p>
+                <p>El problema: ¡Algunos cofres tienen trampas!</p>
+            </div>
+            
+            <div class="tutorial-step" data-step="2">
+                <h3>📖 LA VARIABLE</h3>
+                <p>Para ayudarte, te daremos una <strong>variable</strong>. Una variable es como una caja que guarda un dato.</p>
+                <p>Nuestra variable se llama <code>tipo_cofre</code>.</p>
+                <div class="code-example">
+                    <code>tipo_cofre = 'tesoro'</code> <em>(¡Genial!)</em><br>
+                    <code>tipo_cofre = 'trampa'</code> <em>(¡Peligro!)</em>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="3">
+                <h3>❓ EL COMANDO "IF" (SI...)</h3>
+                <p>Usamos <code>if</code> para hacer una pregunta.</p>
+                <p>El <code>==</code> (doble igual) se usa para <strong>comparar</strong>.</p>
+                <div class="code-example">
+                    <p>// Esto se lee como: "¿La variable tipo_cofre CONTIENE 'tesoro'?"</p>
+                    <code>if (tipo_cofre == 'tesoro') {</code><br>
+                    <code>&nbsp;&nbsp;// ...código a ejecutar SÍ la respuesta es SÍ</code><br>
+                    <code>}</code>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="4">
+                <h3>🤷 EL COMANDO "ELSE" (SI NO...)</h3>
+                <p><code>else</code> se ejecuta si la pregunta del <code>if</code> fue <strong>NO</strong>.</p>
+                <div class="code-example">
+                    <code>if (tipo_cofre == 'tesoro') {</code><br>
+                    <code>&nbsp;&nbsp;abrir_cofre();</code><br>
+                    <code>} <strong>else</strong> {</code><br>
+                    <code>&nbsp;&nbsp;// Esto se ejecuta si el cofre NO era 'tesoro'</code><br>
+                    <code>&nbsp;&nbsp;ignorar_cofre();</code><br>
+                    <code>}</code>
+                </div>
+                <p>¡Este es el código que necesitas!</p>
+            </div>
+
+            <div class="tutorial-nav">
+                <button id="tutorial-prev" class="secondary-btn">Anterior</button>
+                <span id="tutorial-step-counter">Paso 1 / 4</span>
+                <button id="tutorial-next" class="primary-btn">Siguiente</button>
+            </div>
+            <button id="start-button" class="primary-btn hidden">¡ENTENDIDO! 💻</button>
+        </div>
+    </div>
+    <div id="game-container" class="hidden">
+        <div class="game-world">
+            <div id="sensor-display">
+                <h3>SENSOR DEL COFRE:</h3>
+                <code id="sensor-variable-display">// Esperando prueba...</code>
+            </div>
+            <div id="chest-area">
+                <div id="chest">
+                    <div id="chest-lid"></div>
+                    <div id="chest-base"></div>
+                    <div id="chest-result" class="hidden"></div>
+                </div>
+            </div>
+            <div id="test-case-display">
+                <div id="test-1" class="test-box">
+                    <strong>Prueba 1: 'tesoro'</strong>
+                    <span id="test-1-status">PENDIENTE</span>
+                </div>
+                <div id="test-2" class="test-box">
+                    <strong>Prueba 2: 'trampa'</strong>
+                    <span id="test-2-status">PENDIENTE</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="panel-header">
+                <h1>🛡️ EL COFRE DEL TESORO</h1>
+                <div class="level-info">
+                    <span id="level-title">Nivel 3.1: if / else</span>
+                    <div id="tries-counter">
+                        <span>💖 Vidas:</span>
+                        <span id="tries-count">3/3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mission-log-container">
+                <div class="log-header">
+                    <span>📋 BITÁCORA</span>
+                    <button id="clear-log">🗑️</button>
+                </div>
+                <div id="mission-log"></div>
+            </div>
+
+            <div class="code-editor">
+                <div class="editor-header">
+                    <span>📝 LIBRO DE REGLAS</span>
+                    <span class="editor-tips">💡 Ctrl+Enter</span>
+                </div>
+                <textarea id="code-input" placeholder="// if (tipo_cofre == 'tesoro') { ... }"></textarea>
+            </div>
+
+            <div class="action-buttons">
+                <div class="command-buttons">
+                    <button id="btn-if" class="cmd-btn">if ( ) { }</button>
+                    <button id="btn-else" class="cmd-btn">else { }</button>
+                    <button id="btn-open" class="cmd-btn">abrir_cofre()</button>
+                    <button id="btn-ignore" class="cmd-btn">ignorar_cofre()</button>
+                </div>
+                <div class="control-buttons">
+                    <button id="run-button" class="primary-btn">▶ PROBAR CÓDIGO</button>
+                    <button id="reset-button" class="secondary-btn">🔄 REINICIAR</button>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button id="back-to-tutorial" class="help-btn">📚 VER TUTORIAL</button>
+                    <button id="back-to-map" class="map-btn">🗺️ VOLVER AL MAPA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="primerJ.js"></script>
+</body>
+</html>

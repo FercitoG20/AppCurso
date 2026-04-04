@@ -1,0 +1,287 @@
+/* --- ESTILOS GENERALES --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #000, #1a1a2e);
+    color: #ffffff;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#game-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+    gap: 0;
+}
+
+.hidden { display: none !important; }
+
+/* --- ESTILOS: BÓVEDA (Panel Izquierdo) --- */
+.game-world {
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-right: 3px solid #00ff00;
+}
+
+#vault-door {
+    width: 350px;
+    height: 450px;
+    background: #555;
+    border: 10px solid #777;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 30px #000 inset;
+}
+
+#access-panel {
+    width: 280px;
+    height: 200px;
+    background: #000;
+    border: 3px solid;
+    border-radius: 5px;
+    padding: 15px;
+    font-family: 'Courier New', monospace;
+    transition: all 0.5s ease;
+}
+#access-panel h2 {
+    text-align: center;
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+#access-status {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 5px;
+}
+.input-field {
+    margin-top: 10px;
+    font-size: 1.1em;
+}
+.input-field span:last-child {
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* Estados del panel */
+#access-panel.denied {
+    border-color: #ff0000;
+    color: #ff0000;
+    box-shadow: 0 0 15px #ff0000;
+}
+#access-panel.denied #access-status {
+    background: #ff0000;
+    color: #000;
+}
+#access-panel.success {
+    border-color: #00ff00;
+    color: #00ff00;
+    box-shadow: 0 0 15px #00ff00;
+}
+#access-panel.success #access-status {
+    background: #00ff00;
+    color: #000;
+}
+
+
+/* --- PANEL DE CONTROL --- */
+.control-panel {
+    background: #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 15px;
+    overflow-y: auto;
+}
+
+.panel-header {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #00ff00;
+}
+.panel-header h1 {
+    color: #00ff00;
+    font-size: 1.5em;
+}
+.level-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    color: white;
+}
+#tries-count { color: #e74c3c; }
+
+/* Bitácora */
+#mission-log-container {
+    flex: 1;
+    background: #0a0a0a;
+    border: 2px solid #00ff00;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+}
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(0, 255, 0, 0.1);
+    border-bottom: 1px solid #00ff00;
+    color: #00ff00;
+}
+#clear-log {
+    background: transparent;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#mission-log {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+}
+.log-entry.info { color: #ecf0f1; }
+.log-entry.success { color: #2ecc71; }
+.log-entry.error { color: #e74c3c; font-weight: bold; }
+.log-entry.data { color: #f1c40f; }
+
+/* Editor */
+.code-editor {
+    background: #0a0a0a;
+    border: 2px solid #777;
+    border-radius: 8px;
+}
+.editor-header {
+    padding: 8px 12px;
+    background: rgba(119, 119, 119, 0.1);
+    border-bottom: 1px solid #777;
+    color: #777;
+}
+#code-input {
+    width: 100%;
+    height: 150px;
+    background: #000000;
+    border: none;
+    color: #2ecc71;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    padding: 12px;
+    resize: none;
+    outline: none;
+}
+
+/* Botones */
+.action-buttons { display: flex; flex-direction: column; gap: 12px; }
+.command-buttons { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.cmd-btn {
+    background: linear-gradient(135deg, #00a000, #00ff00);
+    border: none; padding: 10px; border-radius: 6px;
+    color: #000; font-weight: bold; cursor: pointer;
+}
+.control-buttons { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; }
+.primary-btn {
+    background: linear-gradient(135deg, #00ff00, #00a000);
+    color: #000; border: none; padding: 12px;
+    border-radius: 6px; font-weight: bold; cursor: pointer;
+}
+.secondary-btn {
+    background: linear-gradient(135deg, #FF9800, #F44336);
+    color: white; border: none; padding: 12px;
+    border-radius: 6px; font-weight: bold; cursor: pointer;
+}
+button { transition: all 0.2s ease; }
+button:hover { transform: translateY(-2px); }
+
+/* Botones de Navegación */
+.navigation-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+.help-btn, .map-btn {
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.help-btn { background: linear-gradient(135deg, #007bff, #0056b3); }
+.map-btn { background: linear-gradient(135deg, #6c757d, #343a40); }
+
+/* --- MODALES (TUTORIAL) --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: linear-gradient(135deg, #1f2a40, #182848);
+    border: 3px solid #00ff00;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    color: white;
+    max-width: 600px;
+}
+.modal-content h1 { font-size: 2em; margin-bottom: 15px; }
+.modal-content button {
+    background: linear-gradient(135deg, #00ff00, #00a000);
+    color: #000;
+    border: none; padding: 12px 25px; border-radius: 8px;
+    font-weight: bold; cursor: pointer; margin-top: 15px;
+}
+.modal-content button.secondary-btn {
+    background: linear-gradient(135deg, #FF9800, #F44336);
+    color: white;
+}
+
+/* Estilos del Tutorial Animado */
+.tutorial-step {
+    display: none;
+    text-align: left;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+.tutorial-step.active { display: block; }
+.code-example {
+    background: #0a0a0a;
+    border: 1px solid #555;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-family: 'Courier New', monospace;
+}
+.code-example code { color: #2ecc71; }
+.code-example p { color: #999; margin-bottom: 0; }
+.tutorial-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+#tutorial-step-counter { font-weight: bold; }
+#start-button {
+    margin-top: 20px;
+    width: 100%;
+}

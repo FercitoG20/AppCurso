@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isla 7: Funciones con Parámetros</title>
+    <link rel="stylesheet" href="primerJ.css">
+</head>
+<body>
+    <div id="victory-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>🤖 ¡GOLEMS ACTIVADOS! 🤖</h1>
+            <p>¡Creaste una función reutilizable con <strong>Parámetros</strong>!</p>
+            <button id="next-level-button">Siguiente Nivel ⚙️</button>
+        </div>
+    </div>
+    
+    <div id="gameover-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>❌ ¡FALLO EN EL ESCÁNER! ❌</h1>
+            <p id="gameover-reason">No se escanearon todos los golems.</p>
+            <button id="retry-button">Intentar de Nuevo 🔄</button>
+        </div>
+    </div>
+
+    <div id="tutorial-modal" class="modal-overlay">
+        <div class="modal-content tutorial">
+            <h1>👋 ¡ISLA 7: FUNCIONES FLEXIBLES!</h1>
+            
+            <div class="tutorial-step active" data-step="1">
+                <h3>🎯 OBJETIVO</h3>
+                <p>¡Debemos escanear 3 Golems: 'golem_tierra', 'golem_fuego' y 'golem_hielo'!</p>
+                <p>El comando base del taller es <code>escanear_componente(nombre)</code>.</p>
+            </div>
+            
+            <div class="tutorial-step" data-step="2">
+                <h3>💡 ¡ABSTRACCIÓN!</h3>
+                <p>En lugar de llamar a <code>escanear_componente()</code> 3 veces, ¡creemos nuestro propio comando (función) para simplificar!</p>
+                <p>Pero esta vez, la función debe ser *flexible*.</p>
+            </div>
+
+            <div class="tutorial-step" data-step="3">
+                <h3>📦 ¿QUÉ ES UN PARÁMETRO?</h3>
+                <p>Un <strong>Parámetro</strong> es una variable especial que pones en los paréntesis <code>( )</code> al *definir* tu función.</p>
+                <p>Actúa como una "caja" vacía, esperando recibir un dato.</p>
+                <div class="code-example">
+                    <code>function escanear_golem( <strong>objetivo</strong> ) {</code><br>
+                    <code>&nbsp;&nbsp;// 'objetivo' es el parámetro</code><br>
+                    <code>}</code>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="4">
+                <h3>⚙️ USAR EL PARÁMETRO</h3>
+                <p>Dentro de tu función, puedes *usar* esa "caja" (el parámetro) como cualquier otra variable.</p>
+                <div class="code-example">
+                    <code>function escanear_golem( objetivo ) {</code><br>
+                    <code>&nbsp;&nbsp;escanear_componente( <strong>objetivo</strong> );</code><br>
+                    <code>}</code>
+                </div>
+                <p>¡Ahora tu función <code>escanear_golem</code> es un atajo para el comando <code>escanear_componente</code>!</p>
+            </div>
+
+            <div class="tutorial-step" data-step="5">
+                <h3>📞 LLAMAR CON UN ARGUMENTO</h3>
+                <p>Al *llamar* a tu función, le pasas el dato que quieres que llene la "caja" (el parámetro). Este dato se llama <strong>argumento</strong>.</p>
+                <div class="code-example">
+                    <p>// 'golem_tierra' es el argumento</p>
+                    <p>// Dentro de la función, 'objetivo' se convertirá en 'golem_tierra'</p>
+                    <code>escanear_golem( 'golem_tierra' );</code>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="6">
+                <h3>✅ TU MISIÓN COMPLETA</h3>
+                <p>1. <strong>Define</strong> la función <code>escanear_golem(objetivo)</code>.</p>
+                <p>2. <strong>Llama</strong> a tu función 3 veces, una para cada golem.</p>
+                <div class="code-example">
+                    <code>function escanear_golem(objetivo) {</code><br>
+                    <code>&nbsp;&nbsp;escanear_componente(objetivo);</code><br>
+                    <code>}</code><br><br>
+                    <code>escanear_golem('golem_tierra');</code><br>
+                    <code>escanear_golem('golem_fuego');</code><br>
+                    <code>escanear_golem('golem_hielo');</code>
+                </div>
+            </div>
+
+            <div class="tutorial-nav">
+                <button id="tutorial-prev" class="secondary-btn">Anterior</button>
+                <span id="tutorial-step-counter">Paso 1 / 6</span>
+                <button id="tutorial-next" class="primary-btn">Siguiente</button>
+            </div>
+            <button id="start-button" class="primary-btn hidden">¡A CONSTRUIR! 💻</button>
+        </div>
+    </div>
+    <div id="game-container" class="hidden">
+        <div class="game-world">
+            <div id="golem-workshop">
+                <div class="golem-pedestal">
+                    <div id="golem_tierra" class="golem tierra off"></div>
+                    <span>Tierra</span>
+                </div>
+                <div class="golem-pedestal">
+                    <div id="golem_fuego" class="golem fuego off"></div>
+                    <span>Fuego</span>
+                </div>
+                <div class="golem-pedestal">
+                    <div id="golem_hielo" class="golem hielo off"></div>
+                    <span>Hielo</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="panel-header">
+                <h1>⚙️ TALLER DE GOLEMS</h1>
+                <div class="level-info">
+                    <span id="level-title">Nivel 7.1: function(param)</span>
+                    <div id="tries-counter">
+                        <span>💖 Vidas:</span>
+                        <span id="tries-count">3/3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mission-log-container">
+                <div class="log-header">
+                    <span>📋 CONSOLA DEL TALLER</span>
+                    <button id="clear-log">🗑️</button>
+                </div>
+                <div id="mission-log"></div>
+            </div>
+
+            <div class="code-editor">
+                <div class="editor-header">
+                    <span>📝 ESQUEMAS</span>
+                    <span class="editor-tips">💡 Ctrl+Enter</span>
+                </div>
+                <textarea id="code-input" placeholder="// function escanear_golem(objetivo) { ... }"></textarea>
+            </div>
+
+            <div class="action-buttons">
+                <div class="command-buttons">
+                    <button id="btn-function" class="cmd-btn">function ...( ) { }</button>
+                    <button id="btn-scan" class="cmd-btn">escanear_componente( )</button>
+                    <button id="btn-call" class="cmd-btn">escanear_golem( )</button>
+                </div>
+                <div class="control-buttons">
+                    <button id="run-button" class="primary-btn">▶ EJECUTAR</button>
+                    <button id="reset-button" class="secondary-btn">🔄 REINICIAR</button>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button id="back-to-tutorial" class="help-btn">📚 VER TUTORIAL</button>
+                    <button id="back-to-map" class="map-btn">🗺️ VOLVER AL MAPA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="primerJ.js"></script>
+</body>
+</html>

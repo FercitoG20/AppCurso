@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temario | ProgFundamentos</title>
+    
+    <link href="librerias/css2.css" rel="stylesheet">
+    <link rel="stylesheet" href="estilos/estilos.css?v=4.1">
+    
+    <style>
+        /* Estilos para el menú de usuario (mismo que home) */
+        nav.container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 1rem 2rem;
+        }
+        
+        nav.container ul {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #auth-links-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: 20px;
+        }
+        
+        .nav-username {
+            color: #00ffff;
+            font-weight: 600;
+            padding: 8px 12px;
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            font-size: 0.9rem;
+        }
+        
+        .btn-nav-cta {
+            background: linear-gradient(135deg, #00ffff, #0099ff);
+            color: #0a0a2a;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .btn-nav-cta-secondary {
+            background: rgba(0, 255, 255, 0.1);
+            color: #00ffff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            cursor: pointer;
+        }
+        
+        .btn-nav-cta-secondary:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .btn-nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+        }
+        
+        /* Estilos para la página de temario */
+        #page-header {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(0, 100, 255, 0.1));
+            padding: 4rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            margin-bottom: 2rem;
+        }
+        
+        #page-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #00ffff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        #page-header p {
+            font-size: 1.2rem;
+            color: #aaa;
+        }
+        
+        #temario-detalle {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .accordion-item {
+            background: rgba(10, 25, 47, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .accordion-item:hover {
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+        
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .accordion-header:hover {
+            background: rgba(0, 255, 255, 0.05);
+        }
+        
+        .accordion-header h2 {
+            margin: 0;
+            font-size: 1.3rem;
+            color: #00ffff;
+        }
+        
+        .accordion-icon {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00ffff;
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-item.active .accordion-icon {
+            transform: rotate(45deg);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            padding: 0 1.5rem;
+        }
+        
+        .accordion-item.active .accordion-content {
+            max-height: 500px;
+            padding: 1.5rem;
+        }
+        
+        .accordion-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .accordion-content li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .accordion-content li:before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: #00ffff;
+        }
+        
+        .accordion-content li:last-child {
+            border-bottom: none;
+        }
+        
+        .accordion-content strong {
+            color: #00ffaa;
+        }
+        
+        @media (max-width: 768px) {
+            nav.container {
+                flex-direction: column;
+            }
+            
+            nav.container ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+            
+            #auth-links-container {
+                margin-left: 0;
+            }
+            
+            #page-header {
+                padding: 2rem 1rem;
+            }
+            
+            #page-header h2 {
+                font-size: 1.8rem;
+            }
+            
+            #temario-detalle {
+                padding: 1rem;
+            }
+            
+            .accordion-header h2 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="theme-dark">
+    <div id="scroll-progress"></div>
+    
+    <header>
+        <nav class="container">
+            <h1>Prog<span class="highlight">Fundamentos</span></h1>
+            <ul>
+                <li><a href="home.html" class="nav-link">Inicio</a></li>
+                <li><a href="temario.html" class="nav-link active-page">Temario</a></li>
+                <li><a href="proyectos.html" class="nav-link">Proyectos</a></li>
+                <li><a href="contactos.html" class="nav-link">Contacto</a></li>
+                <div id="auth-links-container">
+                    <a href="login/login.html" class="btn-nav-cta">🔐 Iniciar Sesión</a>
+                </div>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="page-header">
+            <div class="container">
+                <h2>📚 Ruta de Aprendizaje</h2>
+                <p>El desglose completo de tu viaje en la programación.</p>
+            </div>
+        </section>
+
+        <section id="temario-detalle" class="container">
+            <article class="accordion-item">
+                <header class="accordion-header">
+                    <h2>🎮 1er Grado: Lógica y Algoritmos Creativos</h2>
+                    <span class="accordion-icon">+</span>
+                </header>
+                <div class="accordion-content">
+                    <ul>
+                        <li><strong>Unidad 1:</strong> Introducción al Pensamiento Computacional.</li>
+                        <li><strong>Unidad 2:</strong> ¿Qué es un Algoritmo? (Pseudocódigo y Diagramas de Flujo).</li>
+                        <li><strong>Unidad 3:</strong> Variables, Constantes y Tipos de Datos.</li>
+                        <li><strong>Unidad 4:</strong> Operadores Aritméticos, Lógicos y Relacionales.</li>
+                        <li><strong>Unidad 5:</strong> Entrada y Salida de Datos.</li>
+                        <li><strong>🎯 Proyecto:</strong> Creación de un "Calculador de Promedios".</li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="accordion-item">
+                <header class="accordion-header">
+                    <h2>⚙️ 2do Grado: Estructuras Avanzadas y Datos</h2>
+                    <span class="accordion-icon">+</span>
+                </header>
+                <div class="accordion-content">
+                    <ul>
+                        <li><strong>Unidad 1:</strong> Estructuras Condicionales (If, Else, Switch).</li>
+                        <li><strong>Unidad 2:</strong> Bucles y Estructuras Repetitivas (For, While).</li>
+                        <li><strong>Unidad 3:</strong> Arreglos Unidimensionales (Vectores).</li>
+                        <li><strong>Unidad 4:</strong> Arreglos Bidimensionales (Matrices).</li>
+                        <li><strong>Unidad 5:</strong> Depuración de Código.</li>
+                        <li><strong>🎯 Proyecto:</strong> Desarrollo de un "Juego de Adivinanzas".</li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="accordion-item">
+                <header class="accordion-header">
+                    <h2>🚀 3er Grado: P.O.O. y Proyectos Innovadores</h2>
+                    <span class="accordion-icon">+</span>
+                </header>
+                <div class="accordion-content">
+                    <ul>
+                        <li><strong>Unidad 1:</strong> Funciones y Modularidad.</li>
+                        <li><strong>Unidad 2:</strong> Parámetros y Retorno de Valores.</li>
+                        <li><strong>Unidad 3:</strong> Introducción a la Programación Orientada a Objetos.</li>
+                        <li><strong>Unidad 4:</strong> Clases, Objetos, Atributos y Métodos.</li>
+                        <li><strong>Unidad 5:</strong> Manejo Básico de Archivos.</li>
+                        <li><strong>🎯 Proyecto:</strong> "Mini Sistema de Registro de Alumnos".</li>
+                    </ul>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 ProgFundamentos | Desarrolla tu Potencial.</p>
+        </div>
+    </footer>
+
+    <script src="scripts/script.js"></script>
+    
+    <script type="module">
+        import { auth, db } from './librerias/auth.firebase.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        console.log("📚 Temario: Iniciando...");
+        
+        // Función para actualizar el menú
+        async function updateAuthMenu(user) {
+            const authLinksContainer = document.getElementById('auth-links-container');
+            
+            if (!authLinksContainer) {
+                console.error("❌ No se encontró el contenedor auth-links-container");
+                return;
+            }
+
+            if (user) {
+                console.log("👤 Usuario autenticado:", user.email);
+                
+                try {
+                    const userDocRef = doc(db, "usuarios", user.uid);
+                    const userDoc = await getDoc(userDocRef);
+                    
+                    let nombreUsuario = 'Usuario';
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        nombreUsuario = userData.nombres ? userData.nombres.split(' ')[0] : 'Usuario';
+                        console.log("✅ Datos cargados:", nombreUsuario);
+                    }
+                    
+                    authLinksContainer.innerHTML = `
+                        <span class="nav-username">👋 Hola, ${nombreUsuario}</span>
+                        <a href="dashboard.html" class="btn-nav-cta-secondary">📊 Mi Progreso</a>
+                        <a href="#" id="logoutBtnTemario" class="btn-nav-cta-secondary">🚪 Cerrar Sesión</a>
+                    `;
+                    
+                    const logoutBtn = document.getElementById('logoutBtnTemario');
+                    if (logoutBtn) {
+                        logoutBtn.onclick = async (e) => {
+                            e.preventDefault();
+                            await signOut(auth);
+                            window.location.reload();
+                        };
+                    }
+                } catch (error) {
+                    console.error("❌ Error al cargar datos:", error);
+                    authLinksContainer.innerHTML = `
+                        <span class="nav-username">👋 Hola, Usuario</span>
+                        <a href="#" id="logoutBtnTemario" class="btn-nav-cta-secondary">🚪 Cerrar Sesión</a>
+                    `;
+                }
+            } else {
+                console.log("👤 Usuario no autenticado");
+                authLinksContainer.innerHTML = `
+                    <a href="login/login.html" class="btn-nav-cta">🔐 Iniciar Sesión</a>
+                `;
+            }
+        }
+
+        // Escuchar cambios en autenticación
+        onAuthStateChanged(auth, (user) => {
+            console.log("🔄 Auth State Changed:", user ? user.email : "No user");
+            updateAuthMenu(user);
+        });
+        
+        // Verificación inmediata
+        if (auth.currentUser) {
+            updateAuthMenu(auth.currentUser);
+        }
+        
+        // Accordion functionality
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const accordionItem = header.parentElement;
+                accordionItem.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>

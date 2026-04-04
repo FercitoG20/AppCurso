@@ -1,0 +1,165 @@
+/* Quitar márgenes y ocultar scroll */
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Consolas', 'Courier New', monospace;
+    background-color: #000;
+}
+
+#map-canvas {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Asegurar que esté detrás */
+}
+
+/* --- Estilos de la Popup (Temática Mágica) --- */
+#level-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* MODIFICADO: Fondo oscuro, como pergamino/magia */
+    background-color: rgba(30, 20, 10, 0.95);
+    /* MODIFICADO: Color dorado */
+    color: #F1C40F;
+    border: 1px solid #F1C40F;
+    padding: 25px 30px;
+    border-radius: 8px;
+    /* MODIFICADO: Sombra dorada */
+    box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
+    text-align: center;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 100;
+    min-width: 250px;
+    pointer-events: auto;
+}
+
+#level-popup.hidden {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+    pointer-events: none;
+}
+
+#level-popup h2 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+}
+
+#level-popup p {
+    margin: 0 0 20px 0;
+    font-size: 16px;
+    color: #FFF; /* Texto blanco para legibilidad */
+}
+
+/* --- Botones --- */
+#play-button {
+    /* MODIFICADO: Botón con tema dorado/naranja */
+    background: linear-gradient(135deg, #F39C12, #F1C40F);
+    color: #2c1e0a;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+#play-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(241, 196, 15, 0.5);
+}
+
+#close-popup {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #F1C40F; /* Dorado */
+    font-size: 28px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+#close-popup:hover {
+    color: #FFF;
+    transform: scale(1.1);
+}
+
+/* --- Título Principal --- */
+#main-title {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #FFF;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 28px;
+    text-align: center;
+    /* MODIFICADO: Sombra dorada */
+    text-shadow: 0 0 10px #F1C40F, 0 0 20px #F1C40F;
+    z-index: 50;
+    pointer-events: none;
+    line-height: 1.2;
+}
+/* MODIFICADO: Color dorado */
+#main-title span { font-size: 18px; color: #F1C40F; display: block; }
+
+/* --- Estilos para el Botón Home --- */
+#home-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    /* MODIFICADO: Color café/madera */
+    background-color: #8B4513; 
+    color: white;
+    width: 100px;
+    height: 50px;
+    border: 2px solid #D2691E;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Consolas', 'Courier New', monospace;
+    z-index: 50;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+}
+#home-button:hover { transform: scale(1.05); }
+
+/* --- Botón Reset Vista --- */
+#reset-view-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #8B4513; /* Café */
+    color: white;
+    border: 2px solid #D2691E;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    z-index: 50;
+    transition: all 0.2s;
+}
+#reset-view-button:hover { transform: scale(1.1); }
+
+/* --- Botón Volver al Mapa (Oculto) --- */
+#back-to-map {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.1);
+    border: 1px solid #F1C40F;
+    color: #F1C40F;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 50;
+    display: none; /* Oculto por defecto */
+    cursor: pointer;
+}

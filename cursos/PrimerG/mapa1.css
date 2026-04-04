@@ -1,0 +1,159 @@
+/* Quitar márgenes y ocultar scroll */
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Consolas', 'Courier New', monospace;
+    background-color: #000;
+}
+
+#map-canvas {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Asegurar que esté detrás */
+}
+
+/* --- Estilos de la Popup (Dark Mode) --- */
+#level-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(10, 20, 30, 0.95);
+    color: #00FFCC;
+    border: 1px solid #00FFCC;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+    text-align: center;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 100;
+    min-width: 250px;
+    pointer-events: auto; /* <-- Asegúrate de que esto esté presente */
+}
+
+#level-popup.hidden {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+    pointer-events: none; /* <-- Importante que SÍ esté en la clase hidden */
+}
+
+#level-popup h2 { margin: 0 0 10px; color: #FFF; font-size: 24px; }
+#level-popup p { margin: 0 0 20px; color: #00FFCC; font-size: 16px; }
+
+#play-button {
+    background-color: #00FFCC;
+    color: #000;
+    font-weight: bold;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+#play-button:hover { background-color: #FFF; box-shadow: 0 0 10px #00FFCC; }
+
+#close-popup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #555;
+    transition: color 0.2s;
+}
+#close-popup:hover { color: #00FFCC; }
+
+/* --- CSS SIMPLIFICADO para etiquetas (Nivel y Centro Isla) --- */
+.level-label, .island-center-label {
+    /* Quitamos position, transform, z-index - CSS2DRenderer lo maneja */
+    color: #FFF;
+    text-shadow: 0 0 5px #00FFCC;
+    padding: 6px 12px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 1px solid #00FFCC;
+    border-radius: 5px;
+    pointer-events: none; /* Muy importante para no bloquear clics 3D */
+    white-space: nowrap;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.2;
+    transition: opacity 0.4s ease-out; /* Transición suave de opacidad */
+    /* El transform para centrar se aplica por defecto en CSS2DObject */
+}
+
+/* Etiqueta específica para el centro de la isla */
+.island-center-label {
+    font-size: 18px;
+    padding: 8px 15px;
+    border-width: 2px;
+    text-shadow: 0 0 8px #00FFFF;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+/* --- Estilos para el Título Flotante --- */
+#main-title {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #FFF;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 28px;
+    text-align: center;
+    text-shadow: 0 0 10px #00FFCC, 0 0 20px #00FFCC;
+    z-index: 50; /* Por debajo de la popup */
+    pointer-events: none;
+    line-height: 1.2;
+}
+#main-title span { font-size: 18px; color: #00FFCC; display: block; }
+
+/* --- Estilos para el Botón Home --- */
+#home-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #2196F3;
+    color: white;
+    width: 100px;
+    height: 50px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Consolas', 'Courier New', monospace;
+    z-index: 50;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+}
+#home-button:hover { transform: scale(1.05); box-shadow: 0 0 15px #2196F3; }
+
+/* --- Estilos para el Botón Resetear Vista --- */
+#reset-view-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #ff9800;
+    color: white;
+    padding: 0 15px;
+    height: 50px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Consolas', 'Courier New', monospace;
+    z-index: 50;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+}
+#reset-view-button:hover { transform: scale(1.05); box-shadow: 0 0 15px #ff9800; }

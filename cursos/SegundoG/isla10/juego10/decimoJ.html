@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isla 8: Funciones con 'return'</title>
+    <link rel="stylesheet" href="decimoJ.css">
+</head>
+<body>
+    <div id="victory-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>🌀 ¡PORTAL ABIERTO! 🌀</h1>
+            <p>¡Felicidades! ¡Has completado el Primer Grado de Programación!</p>
+            <p>Aprendiste a crear funciones que <strong>devuelven ('return')</strong> valores.</p>
+            <button id="next-level-button">Finalizar 🎓</button>
+        </div>
+    </div>
+    
+    <div id="gameover-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>⛔ ¡FALLO EN EL PORTAL! ⛔</h1>
+            <p id="gameover-reason">Las palabras de poder eran incorrectas.</p>
+            <button id="retry-button">Intentar de Nuevo 🔄</button>
+        </div>
+    </div>
+
+    <div id="tutorial-modal" class="modal-overlay">
+        <div class="modal-content tutorial">
+            <h1>👋 ¡ISLA 8: LA PRUEBA FINAL!</h1>
+            
+            <div class="tutorial-step active" data-step="1">
+                <h3>🎯 OBJETIVO</h3>
+                <p>Este es el portal para graduarte. Para activarlo, debemos usar el comando <code>activar_portal(palabra1, palabra2)</code>.</p>
+            </div>
+            
+            <div class="tutorial-step" data-step="2">
+                <h3>📜 EL PROBLEMA</h3>
+                <p>No sabemos las palabras, solo las runas: <code>'alpha'</code> y <code>'beta'</code>.</p>
+                <p>Necesitamos "traducirlas":</p>
+                <ul>
+                    <li>'alpha' ➔ <strong>'LUX'</strong></li>
+                    <li>'beta' ➔ <strong>'NOVA'</strong></li>
+                </ul>
+            </div>
+
+            <div class="tutorial-step" data-step="3">
+                <h3>✨ EL 'RETURN' (DEVOLVER)</h3>
+                <p>Crearemos una función que, en lugar de *hacer* algo, nos *devuelve* un valor.</p>
+                <p>Usamos la palabra clave <code>return</code> para "entregar" un resultado.</p>
+            </div>
+
+            <div class="tutorial-step" data-step="4">
+                <h3>PASO 1: DEFINIR LA FUNCIÓN</h3>
+                <p>Esta función *recibe* una runa (parámetro) y *devuelve* la palabra correcta (return).</p>
+                <div class="code-example">
+                    <code>function traducir_runa(runa) {</code><br>
+                    <code>&nbsp;&nbsp;if (runa == 'alpha') {</code><br>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;<strong>return 'LUX';</strong></code><br>
+                    <code>&nbsp;&nbsp;}</code><br>
+                    <code>&nbsp;&nbsp;if (runa == 'beta') {</code><br>
+                    <code>&nbsp;&nbsp;&nbsp;&nbsp;<strong>return 'NOVA';</strong></code><br>
+                    <code>&nbsp;&nbsp;}</code><br>
+                    <code>}</code>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="5">
+                <h3>PASO 2: CAPTURAR EL VALOR</h3>
+                <p>¡Ahora usamos nuestra función para *obtener* el valor y *guardarlo* en una variable con <code>let</code>!</p>
+                <div class="code-example">
+                    <code>let palabra1 = traducir_runa('alpha');</code><br>
+                    <code>let palabra2 = traducir_runa('beta');</code>
+                </div>
+                <p>¡Ahora <code>palabra1</code> vale <code>'LUX'</code> y <code>palabra2</code> vale <code>'NOVA'</code>!</p>
+            </div>
+
+            <div class="tutorial-step" data-step="6">
+                <h3>✅ TU MISIÓN COMPLETA</h3>
+                <p>1. <strong>Define</strong> la función <code>traducir_runa</code>.</p>
+                <p>2. <strong>Crea</strong> las variables <code>palabra1</code> y <code>palabra2</code> llamando a tu función.</p>
+                <p>3. <strong>Llama</strong> a <code>activar_portal(palabra1, palabra2)</code>.</p>
+            </div>
+
+            <div class="tutorial-nav">
+                <button id="tutorial-prev" class="secondary-btn">Anterior</button>
+                <span id="tutorial-step-counter">Paso 1 / 6</span>
+                <button id="tutorial-next" class="primary-btn">Siguiente</button>
+            </div>
+            <button id="start-button" class="primary-btn hidden">¡GRADUARME! 💻</button>
+        </div>
+    </div>
+    <div id="game-container" class="hidden">
+        <div class="game-world">
+            <div id="portal-arch">
+                <div id="portal-vortex" class="off"></div>
+            </div>
+            <div id="pedestal-container">
+                <div class="pedestal">
+                    <div id="rune-1" class="rune-display">?</div>
+                    <span>Palabra 1</span>
+                </div>
+                <div class="pedestal">
+                    <div id="rune-2" class="rune-display">?</div>
+                    <span>Palabra 2</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="panel-header">
+                <h1>🌀 PORTAL DEL CONOCIMIENTO</h1>
+                <div class="level-info">
+                    <span id="level-title">Nivel 8.1: 'return'</span>
+                    <div id="tries-counter">
+                        <span>💖 Vidas:</span>
+                        <span id="tries-count">3/3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mission-log-container">
+                <div class="log-header">
+                    <span>📋 CONSOLA DEL PORTAL</span>
+                    <button id="clear-log">🗑️</button>
+                </div>
+                <div id="mission-log"></div>
+            </div>
+
+            <div class="code-editor">
+                <div class="editor-header">
+                    <span>📝 PAPIRO DE TRADUCCIÓN</span>
+                    <span class="editor-tips">💡 Ctrl+Enter</span>
+                </div>
+                <textarea id="code-input" placeholder="// function traducir_runa(runa) { ... }"></textarea>
+            </div>
+
+            <div class="action-buttons">
+                <div class="command-buttons">
+                    <button id="btn-function" class="cmd-btn">function ... ( ) { }</button>
+                    <button id="btn-return" class="cmd-btn">return ...;</button>
+                    <button id="btn-let" class="cmd-btn">let ... = ...;</button>
+                    <button id="btn-portal" class="cmd-btn">activar_portal( , )</button>
+                </div>
+                <div class="control-buttons">
+                    <button id="run-button" class="primary-btn">▶ ACTIVAR</button>
+                    <button id="reset-button" class="secondary-btn">🔄 REINICIAR</button>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button id="back-to-tutorial" class="help-btn">📚 VER TUTORIAL</button>
+                    <button id="back-to-map" class="map-btn">🗺️ VOLVER AL MAPA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="decimoJ.js"></script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isla 9: Bucles y Arrays</title>
+    <link rel="stylesheet" href="primerJ.css">
+</head>
+<body>
+    <div id="victory-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>🤖 ¡TAREAS COMPLETADAS! 🤖</h1>
+            <p>¡Has automatizado al robot usando <strong>'for'</strong> y <strong>'.length'</strong>!</p>
+            <button id="next-level-button">Siguiente Nivel 🦾</button>
+        </div>
+    </div>
+    
+    <div id="gameover-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>🧹 ¡TRABAJO A MEDIAS! 🧹</h1>
+            <p id="gameover-reason">¡El robot no completó todas las tareas!</p>
+            <button id="retry-button">Intentar de Nuevo 🔄</button>
+        </div>
+    </div>
+
+    <div id="tutorial-modal" class="modal-overlay">
+        <div class="modal-content tutorial">
+            <h1>👋 ¡ISLA 9: AUTOMATIZACIÓN!</h1>
+            
+            <div class="tutorial-step active" data-step="1">
+                <h3>🎯 OBJETIVO</h3>
+                <p>¡El robot asistente tiene 4 tareas hoy! Hacerlas una por una es lento.</p>
+                <p>Tu misión es usar <strong>un solo bucle 'for'</strong> para que las complete todas automáticamente.</p>
+            </div>
+            
+            <div class="tutorial-step" data-step="2">
+                <h3>📦 LA LISTA DE TAREAS</h3>
+                <p>El robot recibe sus órdenes en un <strong>Array</strong>:</p>
+                <div class="code-example">
+                    <code>let lista_de_tareas = ['limpiar', 'regar', 'cocinar', 'ordenar'];</code>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="3">
+                <h3>📏 LA PROPIEDAD '.length'</h3>
+                <p>¿Cómo sabe el bucle cuántas veces repetirse? ¡Preguntándole a la lista!</p>
+                <p>Usamos <code>.length</code> para saber el tamaño de un array.</p>
+                <div class="code-example">
+                    <code>lista_de_tareas.length</code>
+                    <p>// ¡Esto nos da el número 4!</p>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="4">
+                <h3>⚙️ EL BUCLE AUTOMÁTICO</h3>
+                <p>Ahora usamos <code>.length</code> en nuestro bucle <code>for</code>. ¡Así funcionará con cualquier número de tareas!</p>
+                <div class="code-example">
+                    <code>for (let i = 0; i < <strong>lista_de_tareas.length</strong>; i++) {</code><br>
+                    <code>&nbsp;&nbsp;// ...código a repetir...</code><br>
+                    <code>}</code>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="5">
+                <h3>🔗 LA COMBINACIÓN FINAL</h3>
+                <p>Dentro del bucle, usamos la variable <code>i</code> (que valdrá 0, 1, 2, 3) para acceder a cada tarea.</p>
+                <div class="code-example">
+                    <code>for (let i = 0; i < lista_de_tareas.length; i++) {</code><br>
+                    <code>&nbsp;&nbsp;let tarea_actual = <strong>lista_de_tareas[i]</strong>;</code><br>
+                    <code>&nbsp;&nbsp;hacer_tarea(tarea_actual);</code><br>
+                    <code>}</code>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="6">
+                <h3>✅ TU MISIÓN</h3>
+                <p>1. Escribe el bucle <code>for</code> usando <code>lista_de_tareas.length</code>.</p>
+                <p>2. Dentro del bucle, obtén la tarea actual usando <code>lista_de_tareas[i]</code>.</p>
+                <p>3. Llama a <code>hacer_tarea()</code> con esa tarea.</p>
+            </div>
+
+            <div class="tutorial-nav">
+                <button id="tutorial-prev" class="secondary-btn">Anterior</button>
+                <span id="tutorial-step-counter">Paso 1 / 6</span>
+                <button id="tutorial-next" class="primary-btn">Siguiente</button>
+            </div>
+            <button id="start-button" class="primary-btn hidden">¡A TRABAJAR! 💻</button>
+        </div>
+    </div>
+    <div id="game-container" class="hidden">
+        <div class="game-world">
+            <div id="room-area">
+                <div id="robot-assistant">🤖</div>
+                <div id="robot-action-bubble" class="hidden"></div>
+                <div id="plant">🌱</div>
+                <div id="trash">🗑️</div>
+            </div>
+            <div id="checklist-board">
+                <h3>PIZARRA DE TAREAS</h3>
+                <ul id="task-list">
+                    </ul>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="panel-header">
+                <h1>🦾 ROBOT ASISTENTE</h1>
+                <div class="level-info">
+                    <span id="level-title">Nivel 9.1: 'for' + '.length'</span>
+                    <div id="tries-counter">
+                        <span>💖 Vidas:</span>
+                        <span id="tries-count">3/3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mission-log-container">
+                <div class="log-header">
+                    <span>📋 REGISTRO DEL ROBOT</span>
+                    <button id="clear-log">🗑️</button>
+                </div>
+                <div id="mission-log"></div>
+            </div>
+
+            <div class="code-editor">
+                <div class="editor-header">
+                    <span>📝 PROTOCOLOS</span>
+                    <span class="editor-tips">💡 Ctrl+Enter</span>
+                </div>
+                <textarea id="code-input" placeholder="// for (let i = 0; i < lista_de_tareas.length; i++) { ... }"></textarea>
+            </div>
+
+            <div class="action-buttons">
+                <div class="command-buttons">
+                    <button id="btn-for" class="cmd-btn">for ( ... .length ) { }</button>
+                    <button id="btn-let" class="cmd-btn">let tarea = ...[i]</button>
+                    <button id="btn-do" class="cmd-btn">hacer_tarea( )</button>
+                </div>
+                <div class="control-buttons">
+                    <button id="run-button" class="primary-btn">▶ EJECUTAR</button>
+                    <button id="reset-button" class="secondary-btn">🔄 REINICIAR</button>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button id="back-to-tutorial" class="help-btn">📚 VER TUTORIAL</button>
+                    <button id="back-to-map" class="map-btn">🗺️ VOLVER AL MAPA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="primerJ.js"></script>
+</body>
+</html>

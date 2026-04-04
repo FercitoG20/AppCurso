@@ -1,0 +1,118 @@
+/* ============================================
+    ESTILOS PARA PÁGINAS DE AUTENTICACIÓN
+    (login.html, registro.html)
+    ============================================
+*/
+
+/*
+ * Configuración de la página completa 
+ * Usamos la clase .auth-page que pusimos en el <body>
+ */
+body.auth-page {
+    /* Usamos Flexbox para centrar todo */
+    display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center;   /* Centrado vertical */
+    min-height: 100vh;     /* Ocupa al menos toda la altura de la pantalla */
+    
+    /* Tomamos el fondo oscuro de tu tema principal */
+    background-color: var(--background-color, #1e1e2c);
+    font-family: 'Poppins', sans-serif; /* Asegura la fuente */
+    color: var(--text-color, #f0f0f0);
+}
+
+/* Contenedor que agrupa el logo y el formulario */
+.auth-wrapper {
+    width: 100%;
+    max-width: 450px; /* Ancho máximo del formulario */
+    padding: 20px;
+}
+
+/* Estilo para el logo "ProgFundamentos" */
+.auth-logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-logo h1 {
+    font-size: 2.5rem; /* Tamaño del logo */
+    margin: 0;
+    color: var(--text-color, #fff);
+}
+
+.auth-logo .highlight {
+    color: var(--accent-color, #00ffff);
+}
+
+
+/* Contenedor principal del formulario */
+.form-container {
+    width: 100%;
+    padding: 30px 35px; /* Más padding */
+    background-color: var(--background-color-light, #2a2a3a); 
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    text-align: left;
+}
+
+/* Grupos de formulario (label + input) */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-color, #f0f0f0);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color, #444);
+    background-color: var(--background-color, #1e1e2c); 
+    color: var(--text-color, #f0f0f0);
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box; 
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus {
+    outline: none;
+    border-color: var(--accent-color, #00ffff);
+    box-shadow: 0 0 5px rgba(var(--accent-color-rgb, 0, 255, 255), 0.5); 
+}
+
+/* Botón (reutiliza tu clase .btn-primary) */
+.btn-primary[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+/* Enlace para cambiar entre login y registro */
+.form-link {
+    display: block;
+    margin-top: 25px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-color-light, #ccc);
+}
+
+.form-link a {
+    color: var(--accent-color, #00ffff);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.form-link a:hover {
+    text-decoration: underline;
+}

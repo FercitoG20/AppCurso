@@ -1,0 +1,346 @@
+/* --- ESTILOS GENERALES --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #4b6cb7, #182848);
+    color: #ffffff;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#game-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+    gap: 0;
+}
+
+.hidden { display: none !important; }
+
+/* --- ESTILOS: EL COFRE (Panel Izquierdo) --- */
+.game-world {
+    background: #1f2a40;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-right: 3px solid #fbc531;
+    justify-content: space-between;
+}
+
+#sensor-display {
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid #fbc531;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+}
+#sensor-display h3 {
+    margin-bottom: 10px;
+    color: #fbc531;
+}
+#sensor-variable-display {
+    color: #00ff00;
+    font-size: 1.2em;
+    font-family: 'Courier New', monospace;
+}
+
+#chest-area {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Animación del cofre */
+#chest {
+    width: 150px;
+    height: 120px;
+    position: relative;
+}
+#chest-base {
+    width: 150px;
+    height: 70px;
+    background: #8B4513;
+    border: 5px solid #D2691E;
+    position: absolute;
+    bottom: 0;
+    border-radius: 0 0 10px 10px;
+}
+#chest-lid {
+    width: 160px;
+    height: 50px;
+    background: #A0522D;
+    border: 5px solid #D2691E;
+    position: absolute;
+    top: 0;
+    left: -5px;
+    border-radius: 10px 10px 0 0;
+    transform-origin: bottom center;
+    transition: transform 0.5s ease;
+}
+#chest.open #chest-lid {
+    transform: rotateX(-120deg);
+}
+
+#chest-result {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 4em;
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+#chest-result.show {
+    opacity: 1;
+    top: -70px;
+}
+#chest.treasure .show { color: #fbc531; } /* 🏆 */
+#chest.trap .show { color: #e74c3c; } /* 💥 */
+
+/* Animaciones de estado */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 10px #fbc531; }
+    50% { box-shadow: 0 0 30px 15px #fbc531; }
+}
+
+#chest.treasure { animation: glow 1s infinite; }
+#chest.trap { animation: shake 0.5s infinite; }
+
+
+#test-case-display {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+.test-box {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.2);
+    border: 2px solid #555;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.test-box span {
+    font-weight: bold;
+    display: block;
+    margin-top: 5px;
+}
+.test-box.pass { border-color: #2ecc71; }
+.test-box.fail { border-color: #e74c3c; }
+#test-1-status.PENDIENTE, #test-2-status.PENDIENTE { color: #777; }
+#test-1-status.ÉXITO, #test-2-status.ÉXITO { color: #2ecc71; }
+#test-1-status.FALLO, #test-2-status.FALLO { color: #e74c3c; }
+
+
+/* --- PANEL DE CONTROL --- */
+.control-panel {
+    background: #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 15px;
+    overflow-y: auto;
+}
+
+.panel-header {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #fbc531;
+}
+.panel-header h1 {
+    color: #fbc531;
+    font-size: 1.5em;
+}
+.level-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+}
+#tries-count { color: #e74c3c; }
+
+/* Bitácora */
+#mission-log-container {
+    flex: 1;
+    background: #0a0a0a;
+    border: 2px solid #fbc531;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+}
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(251, 197, 49, 0.1);
+    border-bottom: 1px solid #fbc531;
+    color: #fbc531;
+}
+#clear-log {
+    background: transparent;
+    border: 1px solid #fbc531;
+    color: #fbc531;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#mission-log {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+}
+.log-entry.info { color: #ecf0f1; }
+.log-entry.success { color: #2ecc71; }
+.log-entry.error { color: #e74c3c; font-weight: bold; }
+.log-entry.test { color: #fbc531; font-weight: bold; }
+
+/* Editor */
+.code-editor {
+    background: #0a0a0a;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+}
+.editor-header {
+    padding: 8px 12px;
+    background: rgba(52, 152, 219, 0.1);
+    border-bottom: 1px solid #3498db;
+    color: #3498db;
+}
+#code-input {
+    width: 100%;
+    height: 150px;
+    background: #000000;
+    border: none;
+    color: #2ecc71;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    padding: 12px;
+    resize: none;
+    outline: none;
+}
+
+/* Botones */
+.action-buttons { display: flex; flex-direction: column; gap: 12px; }
+.command-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.cmd-btn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border: none; padding: 10px; border-radius: 6px;
+    color: white; font-weight: bold; cursor: pointer;
+}
+.control-buttons { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; }
+.primary-btn {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color: white; border: none; padding: 12px;
+    border-radius: 6px; font-weight: bold; cursor: pointer;
+}
+.secondary-btn {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    color: white; border: none; padding: 12px;
+    border-radius: 6px; font-weight: bold; cursor: pointer;
+}
+button { transition: all 0.2s ease; }
+button:hover { transform: translateY(-2px); }
+
+/* Botones de Navegación */
+.navigation-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+.help-btn, .map-btn {
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.help-btn { background: linear-gradient(135deg, #007bff, #0056b3); }
+.map-btn { background: linear-gradient(135deg, #6c757d, #343a40); }
+
+/* --- MODALES (TUTORIAL) --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: linear-gradient(135deg, #1f2a40, #182848);
+    border: 3px solid #fbc531;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    color: white;
+    max-width: 600px; /* Más ancho para el tutorial */
+}
+.modal-content h1 { font-size: 2em; margin-bottom: 15px; }
+.modal-content button {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    border: none; padding: 12px 25px; border-radius: 8px;
+    color: white; font-weight: bold; cursor: pointer; margin-top: 15px;
+}
+.modal-content button.secondary-btn {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+}
+
+/* Estilos del Tutorial Animado */
+.tutorial-step {
+    display: none; /* Ocultos por defecto */
+    text-align: left;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+.tutorial-step.active {
+    display: block; /* Mostrar el paso actual */
+}
+.tutorial-step img {
+    display: block;
+    margin: 0 auto 15px auto;
+}
+.code-example {
+    background: #0a0a0a;
+    border: 1px solid #555;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+.code-example code {
+    font-family: 'Courier New', monospace;
+    color: #2ecc71;
+}
+.code-example em {
+    color: #fbc531;
+    font-style: italic;
+}
+.tutorial-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+#tutorial-step-counter {
+    font-weight: bold;
+}
+#start-button {
+    margin-top: 20px;
+    width: 100%;
+}

@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Progreso | ProgFundamentos</title>
+    
+    <link href="librerias/css2.css" rel="stylesheet">
+    <link rel="stylesheet" href="estilos/estilos.css?v=4.1">
+    
+    <style>
+        /* ============================================ */
+        /* ESTILOS COMPLETOS - MISMO DISEÑO QUE HOME   */
+        /* ============================================ */
+        
+        /* Reset y variables */
+        :root {
+            --primary-cyan: #00ffff;
+            --primary-blue: #0099ff;
+            --primary-purple: #ff00ff;
+            --bg-dark: #0a192f;
+            --bg-card: rgba(10, 25, 47, 0.7);
+            --text-light: #fff;
+            --text-gray: #aaa;
+            --border-glow: rgba(0, 255, 255, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, #0a0a2a, #0a192f);
+            color: var(--text-light);
+            min-height: 100vh;
+        }
+        
+        /* Scroll progress bar */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-blue), var(--primary-purple));
+            z-index: 10000;
+            transition: width 0.1s ease;
+            box-shadow: 0 0 10px var(--primary-cyan);
+        }
+        
+        /* Header y navegación */
+        header {
+            background: rgba(10, 25, 47, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-glow);
+        }
+        
+        nav.container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        nav.container h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .highlight {
+            color: var(--primary-cyan);
+            -webkit-text-fill-color: var(--primary-cyan);
+        }
+        
+        nav.container ul {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-gray);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-cyan);
+        }
+        
+        .active-page {
+            color: var(--primary-cyan);
+        }
+        
+        .active-page::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-blue));
+            border-radius: 2px;
+        }
+        
+        #auth-links-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: 20px;
+        }
+        
+        .nav-username {
+            color: var(--primary-cyan);
+            font-weight: 600;
+            padding: 8px 12px;
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 8px;
+            border: 1px solid var(--border-glow);
+            font-size: 0.9rem;
+        }
+        
+        .btn-nav-cta {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            color: #0a0a2a;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-nav-cta-secondary {
+            background: rgba(0, 255, 255, 0.1);
+            color: var(--primary-cyan);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: 1px solid var(--border-glow);
+            cursor: pointer;
+        }
+        
+        .btn-nav-cta-secondary:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .btn-nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+        }
+        
+        /* Dashboard container */
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid var(--border-glow);
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .welcome-header h2 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        
+        .rank-info {
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, #00ffff20, #ff00ff20);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            border: 1px solid var(--primary-cyan);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+        
+        /* Progress section */
+        .progress-section {
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .progress-section h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: var(--primary-cyan);
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 30px;
+            background: #1e2a3a;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 1rem 0;
+            border: 1px solid #00ffff40;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ffaa, var(--primary-cyan), var(--primary-blue));
+            width: 0%;
+            transition: width 1s ease-in-out;
+            box-shadow: 0 0 20px var(--primary-cyan);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            color: var(--text-gray);
+            font-size: 0.8rem;
+        }
+        
+        .current-rank {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 1rem 0;
+            text-shadow: 0 0 20px cyan;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; text-shadow: 0 0 30px cyan; }
+        }
+        
+        .points-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00ffaa;
+            text-align: center;
+        }
+        
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-cyan);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-left-color: var(--primary-purple);
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.1);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            color: #fff;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+        
+        .next-rank-info {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            border: 1px dashed #00ffff60;
+            text-align: center;
+        }
+        
+        /* Loading spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(0, 255, 255, 0.3);
+            border-top-color: var(--primary-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav.container {
+                flex-direction: column;
+            }
+            
+            nav.container ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+            
+            #auth-links-container {
+                margin-left: 0;
+            }
+            
+            .dashboard-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+            
+            .welcome-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .current-rank {
+                font-size: 1.8rem;
+            }
+            
+            .points-display {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Toast notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 255, 255, 0.9);
+            color: #0a0a2a;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Achievement badge */
+        .achievement-badge {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #00ffff, #ff00ff);
+            color: #0a0a2a;
+            padding: 20px 40px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            z-index: 2000;
+            animation: bounceIn 0.5s ease-out;
+            box-shadow: 0 0 50px rgba(0,255,255,0.5);
+            text-align: center;
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="theme-dark"> 
+    <div id="scroll-progress"></div> 
+
+    <header>
+        <nav class="container">
+            <h1>Prog<span class="highlight">Fundamentos</span></h1>
+            <ul>
+                <li><a href="home.html" class="nav-link">Inicio</a></li>
+                <li><a href="temario.html" class="nav-link">Temario</a></li>
+                <li><a href="proyectos.html" class="nav-link">Proyectos</a></li>
+                <li><a href="contactos.html" class="nav-link">Contacto</a></li>
+                <div id="auth-links-container">
+                    <a href="login/login.html" class="btn-nav-cta">🔐 Iniciar Sesión</a>
+                </div>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="dashboard-container" id="dashboard-content">
+            <div class="welcome-header">
+                <h2>Mi Progreso, <span id="user-name">Usuario</span>!</h2>
+                <div class="rank-info" id="rank-info">Cargando...</div>
+            </div>
+
+            <div class="progress-section">
+                <h3>🏆 Rango de Programador</h3>
+                <div class="current-rank" id="current-rank-display">⚡ Novato ⚡</div>
+                
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progress-bar" style="width: 0%;"></div>
+                </div>
+                <div class="progress-labels">
+                    <span>Novato (0-99)</span>
+                    <span>Aprendiz (100-299)</span>
+                    <span>Programador (300-599)</span>
+                    <span>Experto (600-999)</span>
+                    <span>Maestro (1000+)</span>
+                </div>
+                
+                <div class="points-display" id="points-display">0</div>
+                <p>puntos totales</p>
+                <small style="color: #666;">🎯 Cada juego completado = 100 puntos</small>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-juegos-completados">0</div>
+                    <div class="stat-label">🎮 Juegos Completados</div>
+                    <small id="total-juegos" style="color: #666; display: block; margin-top: 5px;">de 300 totales</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-posicion">1</div>
+                    <div class="stat-label">📊 Posición Actual</div>
+                    <small style="color: #666;">Nivel 1-5</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-siguiente-rango">100</div>
+                    <div class="stat-label">⭐ Puntos para siguiente rango</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-islas-completadas">0</div>
+                    <div class="stat-label">🏝️ Islas Completadas</div>
+                    <small style="color: #666;">10 juegos por isla</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-progreso-general">0</div>
+                    <div class="stat-label">📈 Progreso General</div>
+                    <small style="color: #666;">% completado</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-juegos-hoy">0</div>
+                    <div class="stat-label">🎯 Juegos Hoy</div>
+                    <small style="color: #666;">Actividad reciente</small>
+                </div>
+            </div>
+
+            <div class="next-rank-info" id="next-rank-info">
+                <p>🏆 Siguiente rango: <strong>Aprendiz</strong> (100 puntos) - ¡Sigue así!</p>
+            </div>
+            
+            <div id="achievements-section" style="margin-top: 2rem;">
+                <h3 style="color: #00ffff; margin-bottom: 1rem;">🏅 Logros Desbloqueados</h3>
+                <div id="achievements-list" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    <p style="color: #666;">Completa más juegos para desbloquear logros...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 ProgFundamentos | Desarrolla tu Potencial.</p>
+        </div>
+    </footer>
+
+    <script src="librerias/three.min.js"></script>
+    <script src="librerias/OrbitControls.js"></script>
+    <script src="scripts/script.js"></script>
+
+    <script type="module">
+        import { auth, db } from './librerias/auth.firebase.js';
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { doc, onSnapshot, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        
+        console.log("📊 Dashboard: Iniciando...");
+        
+        // ============================================
+        // CONFIGURACIÓN Y VARIABLES GLOBALES
+        // ============================================
+        let unsubscribeRealtime = null;
+        let lastPoints = 0;
+        let lastRank = 1;
+        
+        // Configuración de rangos
+        const rangos = {
+            1: { nombre: "Novato", color: "#aaa", next: 100, emoji: "🌱", descripcion: "¡Comienza tu aventura!" },
+            2: { nombre: "Aprendiz", color: "#00ffaa", next: 300, emoji: "📚", descripcion: "Estás aprendiendo rápido" },
+            3: { nombre: "Programador", color: "#00ffff", next: 600, emoji: "💻", descripcion: "¡Ya eres todo un programador!" },
+            4: { nombre: "Experto", color: "#ffaa00", next: 1000, emoji: "🏆", descripcion: "Dominas la programación" },
+            5: { nombre: "Maestro", color: "#ff00ff", next: null, emoji: "👑", descripcion: "¡Eres una leyenda!" }
+        };
+        
+        // Logros disponibles
+        const achievements = [
+            { id: "first_game", nombre: "🎮 Primer Juego", descripcion: "Completa tu primer juego", puntosNecesarios: 100, icono: "🎮" },
+            { id: "ten_games", nombre: "⚡ Diez Juegos", descripcion: "Completa 10 juegos", puntosNecesarios: 1000, icono: "⚡" },
+            { id: "fifty_games", nombre: "🌟 Cincuenta Juegos", descripcion: "Completa 50 juegos", puntosNecesarios: 5000, icono: "🌟" },
+            { id: "hundred_games", nombre: "💯 Cien Juegos", descripcion: "Completa 100 juegos", puntosNecesarios: 10000, icono: "💯" },
+            { id: "complete_island", nombre: "🏝️ Conquistador", descripcion: "Completa una isla completa", puntosNecesarios: 1000, icono: "🏝️" },
+            { id: "master_rank", nombre: "👑 Maestro", descripcion: "Alcanza el rango de Maestro", puntosNecesarios: 1000, icono: "👑" }
+        ];
+        
+        // ============================================
+        // FUNCIONES AUXILIARES
+        // ============================================
+        function mostrarToast(mensaje, tipo = "success") {
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.style.background = tipo === "success" ? "rgba(0, 255, 255, 0.9)" : "rgba(255, 0, 0, 0.9)";
+            toast.textContent = mensaje;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        function mostrarLogro(logro) {
+            const badge = document.createElement('div');
+            badge.className = 'achievement-badge';
+            badge.innerHTML = `
+                <div style="font-size: 3rem;">${logro.icono}</div>
+                <div style="font-size: 1.2rem;">¡Logro Desbloqueado!</div>
+                <div style="font-size: 1rem;">${logro.nombre}</div>
+                <div style="font-size: 0.8rem;">${logro.descripcion}</div>
+            `;
+            document.body.appendChild(badge);
+            setTimeout(() => badge.remove(), 4000);
+            mostrarToast(`🏅 ¡Logro desbloqueado: ${logro.nombre}!`, "success");
+        }
+        
+        function obtenerPosicion(puntos) {
+            if (puntos < 100) return 1;
+            if (puntos < 300) return 2;
+            if (puntos < 600) return 3;
+            if (puntos < 1000) return 4;
+            return 5;
+        }
+        
+        function calcularIslasCompletadas(cursos) {
+            if (!cursos) return 0;
+            let islasCompletas = 0;
+            const grados = ['PrimerG', 'SegundoG', 'TercerG'];
+            
+            grados.forEach(grado => {
+                if (cursos[grado]) {
+                    for (let i = 1; i <= 10; i++) {
+                        const isla = `isla${i}`;
+                        if (cursos[grado][isla]) {
+                            let juegosCompletos = 0;
+                            for (let j = 1; j <= 10; j++) {
+                                const juego = `juego${j}`;
+                                if (cursos[grado][isla][juego]?.estado === 'completo') {
+                                    juegosCompletos++;
+                                }
+                            }
+                            if (juegosCompletos === 10) islasCompletas++;
+                        }
+                    }
+                }
+            });
+            return islasCompletas;
+        }
+        
+        function calcularLogrosDesbloqueados(puntos, juegosCompletados, islasCompletadas, rango) {
+            const desbloqueados = [];
+            
+            if (juegosCompletados >= 1 && puntos >= 100) desbloqueados.push(achievements[0]);
+            if (juegosCompletados >= 10) desbloqueados.push(achievements[1]);
+            if (juegosCompletados >= 50) desbloqueados.push(achievements[2]);
+            if (juegosCompletados >= 100) desbloqueados.push(achievements[3]);
+            if (islasCompletadas >= 1) desbloqueados.push(achievements[4]);
+            if (rango === 5) desbloqueados.push(achievements[5]);
+            
+            return desbloqueados;
+        }
+        
+        // ============================================
+        // FUNCIÓN PRINCIPAL - ACTUALIZAR DASHBOARD
+        // ============================================
+        function actualizarDashboard(userData) {
+            console.log("✅ Actualizando dashboard con datos:", userData);
+            
+            const puntos = userData.puntosTotales || 0;
+            const posicion = obtenerPosicion(puntos);
+            const rangoActual = rangos[posicion];
+            const nombre = `${userData.nombres || 'Usuario'} ${userData.apellidos || ''}`;
+            
+            // Calcular juegos completados
+            let juegosCompletados = 0;
+            if (userData.cursos) {
+                const grados = ['PrimerG', 'SegundoG', 'TercerG'];
+                grados.forEach(grado => {
+                    if (userData.cursos[grado]) {
+                        const islas = Object.keys(userData.cursos[grado]);
+                        islas.forEach(isla => {
+                            if (userData.cursos[grado][isla]) {
+                                const juegos = Object.keys(userData.cursos[grado][isla]);
+                                juegos.forEach(juego => {
+                                    if (userData.cursos[grado][isla][juego]?.estado === 'completo') {
+                                        juegosCompletados++;
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            
+            // Calcular islas completadas
+            const islasCompletadas = calcularIslasCompletadas(userData.cursos);
+            
+            // Calcular porcentaje de progreso general
+            const totalJuegosPosibles = 300;
+            const porcentajeProgreso = Math.round((juegosCompletados / totalJuegosPosibles) * 100);
+            
+            // Calcular juegos de hoy (simulado, se puede mejorar con timestamp)
+            const juegosHoy = Math.floor(Math.random() * 5); // Placeholder
+            
+            // Calcular porcentaje para la barra de rango
+            let porcentaje = 0;
+            if (posicion < 5) {
+                const puntosRangoAnterior = posicion === 1 ? 0 : rangos[posicion-1].next;
+                const puntosEnRango = puntos - puntosRangoAnterior;
+                const rangoTotal = rangoActual.next - puntosRangoAnterior;
+                porcentaje = (puntosEnRango / rangoTotal) * 100;
+            } else {
+                porcentaje = 100;
+            }
+            
+            // Verificar cambios de rango para mostrar animación
+            if (posicion > lastRank) {
+                mostrarToast(`🎉 ¡FELICITACIONES! Has alcanzado el rango de ${rangoActual.nombre} ${rangoActual.emoji}`, "success");
+            }
+            
+            // Verificar puntos para mostrar animación
+            if (puntos > lastPoints && lastPoints > 0) {
+                mostrarToast(`✨ +${puntos - lastPoints} puntos! ✨`, "success");
+            }
+            
+            lastPoints = puntos;
+            lastRank = posicion;
+            
+            // Calcular logros desbloqueados
+            const logrosDesbloqueados = calcularLogrosDesbloqueados(puntos, juegosCompletados, islasCompletadas, posicion);
+            
+            // Actualizar DOM
+            document.getElementById('user-name').textContent = nombre.split(' ')[0];
+            document.getElementById('rank-info').textContent = `${rangoActual.emoji} Rango: ${rangoActual.nombre} (${posicion}/5) ${rangoActual.emoji}`;
+            document.getElementById('current-rank-display').innerHTML = `${rangoActual.emoji} ${rangoActual.nombre} ${rangoActual.emoji}`;
+            document.getElementById('current-rank-display').style.color = rangoActual.color;
+            document.getElementById('current-rank-display').style.textShadow = `0 0 20px ${rangoActual.color}`;
+            document.getElementById('progress-bar').style.width = `${porcentaje}%`;
+            document.getElementById('points-display').textContent = puntos;
+            document.getElementById('stat-posicion').textContent = `${posicion}° ${rangoActual.nombre}`;
+            document.getElementById('stat-juegos-completados').textContent = juegosCompletados;
+            document.getElementById('total-juegos').textContent = `de ${totalJuegosPosibles} totales`;
+            document.getElementById('stat-islas-completadas').textContent = islasCompletadas;
+            document.getElementById('stat-progreso-general').textContent = `${porcentajeProgreso}%`;
+            document.getElementById('stat-juegos-hoy').textContent = juegosHoy;
+            
+            // Mostrar siguiente rango
+            if (posicion < 5) {
+                const siguienteRango = rangos[posicion];
+                const puntosFaltantes = siguienteRango.next - puntos;
+                document.getElementById('stat-siguiente-rango').textContent = puntosFaltantes;
+                document.getElementById('next-rank-info').innerHTML = `
+                    <p>🏆 Siguiente rango: <strong style="color: ${siguienteRango.color}">${siguienteRango.nombre} ${siguienteRango.emoji}</strong> 
+                    (${siguienteRango.next} puntos) - Te faltan ${puntosFaltantes} puntos. 
+                    ¡Completa ${Math.ceil(puntosFaltantes / 100)} juegos más!</p>
+                    <progress value="${puntos}" max="${siguienteRango.next}" style="width: 100%; height: 10px; border-radius: 5px; margin-top: 10px;"></progress>
+                `;
+            } else {
+                document.getElementById('stat-siguiente-rango').textContent = "0";
+                document.getElementById('next-rank-info').innerHTML = `
+                    <p>👑 ¡Eres un Maestro! Has alcanzado el rango máximo. 
+                    Completa todos los ${totalJuegosPosibles - juegosCompletados} juegos restantes para mantener tu título.</p>
+                    <div style="background: linear-gradient(90deg, #ff00ff, #00ffff); padding: 10px; border-radius: 10px; margin-top: 10px;">
+                        🎉 ¡FELICITACIONES! Eres parte de la élite de programadores 🎉
+                    </div>
+                `;
+            }
+            
+            // Mostrar logros
+            const achievementsContainer = document.getElementById('achievements-list');
+            if (logrosDesbloqueados.length > 0) {
+                achievementsContainer.innerHTML = logrosDesbloqueados.map(logro => `
+                    <div style="background: linear-gradient(135deg, rgba(0,255,255,0.1), rgba(255,0,255,0.1)); 
+                                border: 1px solid #00ffff; 
+                                border-radius: 10px; 
+                                padding: 10px 15px; 
+                                display: flex; 
+                                align-items: center; 
+                                gap: 10px;">
+                        <span style="font-size: 2rem;">${logro.icono}</span>
+                        <div>
+                            <strong style="color: #00ffff;">${logro.nombre}</strong>
+                            <p style="font-size: 0.8rem; margin: 0; color: #aaa;">${logro.descripcion}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                achievementsContainer.innerHTML = '<p style="color: #666;">🎯 Completa más juegos para desbloquear logros increíbles...</p>';
+            }
+            
+            // Actualizar título de la página
+            document.title = `${nombre.split(' ')[0]} - ${puntos} pts | ProgFundamentos`;
+        }
+        
+        // ============================================
+        // ACTUALIZAR MENÚ DE USUARIO
+        // ============================================
+        async function actualizarMenu(user) {
+            const authLinksContainer = document.getElementById('auth-links-container');
+            if (!authLinksContainer) return;
+            
+            if (user) {
+                try {
+                    const userDocRef = doc(db, "usuarios", user.uid);
+                    const userDoc = await getDoc(userDocRef);
+                    let nombreUsuario = userDoc.exists() ? (userDoc.data().nombres?.split(' ')[0] || 'Usuario') : 'Usuario';
+                    const puntos = userDoc.exists() ? (userDoc.data().puntosTotales || 0) : 0;
+                    
+                    authLinksContainer.innerHTML = `
+                        <span class="nav-username">👋 Hola, ${nombreUsuario} ⭐${puntos}</span>
+                        <a href="dashboard.html" class="btn-nav-cta-secondary">📊 Mi Progreso</a>
+                        <a href="#" id="logoutBtnDashboard" class="btn-nav-cta-secondary">🚪 Cerrar Sesión</a>
+                    `;
+                    
+                    const logoutBtn = document.getElementById('logoutBtnDashboard');
+                    if (logoutBtn) {
+                        logoutBtn.onclick = async (e) => {
+                            e.preventDefault();
+                            if (unsubscribeRealtime) unsubscribeRealtime();
+                            await signOut(auth);
+                            window.location.href = 'home.html';
+                        };
+                    }
+                } catch (error) {
+                    console.error("Error al actualizar menú:", error);
+                }
+            } else {
+                authLinksContainer.innerHTML = `<a href="login/login.html" class="btn-nav-cta">🔐 Iniciar Sesión</a>`;
+            }
+        }
+        
+        // ============================================
+        // CARGAR DATOS EN TIEMPO REAL
+        // ============================================
+        async function cargarDatosUsuario(user) {
+            try {
+                console.log("📥 Cargando datos para usuario:", user.uid);
+                
+                const userDocRef = doc(db, "usuarios", user.uid);
+                
+                if (unsubscribeRealtime) unsubscribeRealtime();
+                
+                unsubscribeRealtime = onSnapshot(userDocRef, (docSnapshot) => {
+                    if (docSnapshot.exists()) {
+                        const userData = docSnapshot.data();
+                        console.log("✅ Datos actualizados en tiempo real:", userData);
+                        actualizarDashboard(userData);
+                        actualizarMenu(user);
+                    } else {
+                        console.error("❌ Usuario no encontrado en Firestore");
+                        document.getElementById('dashboard-content').innerHTML = `
+                            <div style="text-align: center; padding: 3rem;">
+                                <div class="loading-spinner"></div>
+                                <h3>⚠️ No se encontraron tus datos</h3>
+                                <p>Parece que tu perfil no está completo.</p>
+                                <a href="home.html" class="btn-nav-cta" style="margin-top: 1rem;">Volver al Inicio</a>
+                            </div>
+                        `;
+                    }
+                }, (error) => {
+                    console.error("❌ Error en tiempo real:", error);
+                    document.getElementById('dashboard-content').innerHTML = `
+                        <div style="text-align: center; padding: 3rem;">
+                            <h3>❌ Error de conexión</h3>
+                            <p>${error.message}</p>
+                            <button onclick="location.reload()" class="btn-nav-cta" style="margin-top: 1rem;">Reintentar</button>
+                        </div>
+                    `;
+                });
+                
+            } catch (error) {
+                console.error("❌ Error al cargar datos:", error);
+                document.getElementById('dashboard-content').innerHTML = `
+                    <div style="text-align: center; padding: 3rem;">
+                        <h3>❌ Error al cargar el progreso</h3>
+                        <p>${error.message}</p>
+                        <a href="home.html" class="btn-nav-cta" style="margin-top: 1rem;">Volver al Inicio</a>
+                    </div>
+                `;
+            }
+        }
+        
+        // ============================================
+        // VERIFICAR AUTENTICACIÓN
+        // ============================================
+        function verificarAutenticacion() {
+            const currentUser = auth.currentUser;
+            if (currentUser) {
+                console.log("✅ Usuario ya autenticado:", currentUser.email);
+                cargarDatosUsuario(currentUser);
+                return true;
+            }
+            
+            onAuthStateChanged(auth, (user) => {
+                console.log("🔄 Auth state changed:", user ? user.email : "No user");
+                if (user) {
+                    cargarDatosUsuario(user);
+                } else {
+                    console.log("❌ No hay usuario, redirigiendo a login");
+                    window.location.href = 'login/login.html';
+                }
+            });
+            
+            return false;
+        }
+        
+        // ============================================
+        // INICIALIZAR
+        // ============================================
+        verificarAutenticacion();
+        
+        // Scroll progress bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            const progressBar = document.getElementById('scroll-progress');
+            if (progressBar) progressBar.style.width = scrolled + '%';
+        });
+        
+        // Timeout de seguridad
+        setTimeout(() => {
+            if (!auth.currentUser) {
+                console.log("⚠️ Timeout: No se detectó usuario, redirigiendo");
+                window.location.href = 'login/login.html';
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

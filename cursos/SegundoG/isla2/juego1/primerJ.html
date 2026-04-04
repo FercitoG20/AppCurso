@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isla 2: Alquimia - Parámetros</title>
+    <link rel="stylesheet" href="primerJ.css">
+</head>
+<body>
+    <div id="victory-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>🧪 ¡POCIÓN CREADA! 🧪</h1>
+            <p>¡Has aprendido a usar <strong>parámetros</strong>!</p>
+            <button id="next-level-button">Continuar 🚀</button>
+        </div>
+    </div>
+    
+    <div id="gameover-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>💥 ¡KABOOM! 💥</h1>
+            <p>La poción ha explotado. Revisa la receta y tu código.</p>
+            <button id="retry-button">Intentar de Nuevo 🔄</button>
+        </div>
+    </div>
+
+    <div id="tutorial-modal" class="modal-overlay">
+        <div class="modal-content tutorial">
+            <h1>👋 ¡BIENVENIDO AL LABORATORIO! 👋</h1>
+            <div class="tutorial-steps">
+                <div class="step">
+                    <h3>🎯 OBJETIVO</h3>
+                    <p>Crea la <strong>"Poción de Curación"</strong> siguiendo la receta.</p>
+                </div>
+                <div class="step">
+                    <h3>🧪 RECETA</h3>
+                    <p>2 x Agua Brillante<br>
+                       1 x Hierba Roja<br>
+                       Mezclar 5 segundos</p>
+                </div>
+                <div class="step">
+                    <h3>🎮 NUEVOS COMANDOS</h3>
+                    <p><code>agregar('ingrediente', cantidad);</code><br>
+                       <code>mezclar(tiempo);</code></p>
+                </div>
+            </div>
+            <button id="start-button">¡EMPEZAR! 💻</button>
+        </div>
+    </div>
+
+    <div id="game-container" class="hidden">
+        <div class="game-world">
+            <div id="recipe-display">
+                <h3>Receta: Poción de Curación</h3>
+                <ul>
+                    <li id="step-1">2 x Agua Brillante</li>
+                    <li id="step-2">1 x Hierba Roja</li>
+                    <li id="step-3">Mezclar 5 segundos</li>
+                </ul>
+            </div>
+            <div id="lab-area">
+                <div id="cauldron">
+                    <div id="potion-liquid"></div>
+                    <span>CALDERO</span>
+                </div>
+                <div id="shelf">
+                    <div class="ingredient" data-name="agua_brillante">Agua B.</div>
+                    <div class="ingredient" data-name="hierba_roja">Hierba R.</div>
+                    <div class="ingredient" data-name="polvo_seta">Polvo Seta</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="panel-header">
+                <h1>🧪 LABORATORIO DE ALQUIMIA</h1>
+                <div class="level-info">
+                    <span id="level-title">Nivel 2.1: Parámetros</span>
+                    <div id="tries-counter">
+                        <span>💖 Intentos:</span>
+                        <span id="tries-count">5/5</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mission-log-container">
+                <div class="log-header">
+                    <span>📋 BITÁCORA DEL ALQUIMISTA</span>
+                    <button id="clear-log">🗑️</button>
+                </div>
+                <div id="mission-log"></div>
+            </div>
+
+            <div class="code-editor">
+                <div class="editor-header">
+                    <span>📝 LIBRO DE HECHIZOS</span>
+                    <span class="editor-tips">💡 Ctrl+Enter</span>
+                </div>
+                <textarea id="code-input" placeholder="// Escribe tus comandos aquí..."></textarea>
+            </div>
+
+            <div class="action-buttons">
+                <div class="command-buttons">
+                    <button id="btn-add" class="cmd-btn">🧪 agregar( , )</button>
+                    <button id="btn-mix" class="cmd-btn">🔄 mezclar( )</button>
+                </div>
+                <div class="control-buttons">
+                    <button id="run-button" class="primary-btn">▶ PREPARAR POCIÓN</button>
+                    <button id="reset-button" class="secondary-btn">🔄 LIMPIAR CALDERO</button>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button id="back-to-tutorial" class="help-btn">📚 VER TUTORIAL</button>
+                    <button id="back-to-map" class="map-btn">🗺️ VOLVER AL MAPA</button>
+                </div>
+                </div>
+        </div>
+    </div>
+
+    <script src="primerJ.js"></script>
+</body>
+</html>

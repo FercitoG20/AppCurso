@@ -1,0 +1,297 @@
+/* --- ESTILOS GENERALES --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #43004b, #2a0030);
+    color: #ffffff;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#game-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+    gap: 0;
+}
+
+.hidden { display: none !important; }
+
+/* --- ESTILOS: FIESTA (Panel Izquierdo) --- */
+.game-world {
+    background: linear-gradient(135deg, #1f0023, #0f0011);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-right: 3px solid #f900ff;
+    justify-content: space-between;
+}
+
+#dj-booth {
+    background: #333;
+    border: 3px solid #555;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.dj {
+    font-size: 3em;
+}
+#song-request {
+    font-size: 1.2em;
+    color: #f1c40f;
+    background: #000;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#main-display-screen {
+    height: 150px;
+    background: #000;
+    border: 5px solid #f900ff;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+#song-title {
+    font-size: 3em;
+    font-weight: bold;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 10px #00ff00;
+}
+
+#dance-floor {
+    flex: 1;
+    background: #222;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.villager {
+    width: 40px;
+    height: 40px;
+    background: #e74c3c;
+    border-radius: 50%;
+}
+.villager:nth-child(2) { background: #3498db; }
+.villager:nth-child(3) { background: #2ecc71; }
+
+/* Animación de baile */
+.villager.dancing {
+    animation: dance 0.5s infinite alternate;
+}
+@keyframes dance {
+    from { transform: translateY(0px) rotate(0deg); }
+    to { transform: translateY(-10px) rotate(10deg); }
+}
+
+
+/* --- PANEL DE CONTROL --- */
+.control-panel {
+    background: #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 15px;
+    overflow-y: auto;
+}
+
+.panel-header {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f900ff;
+}
+.panel-header h1 {
+    color: #f900ff;
+    font-size: 1.5em;
+}
+.level-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+}
+#tries-count { color: #e74c3c; }
+
+/* Bitácora */
+#mission-log-container {
+    flex: 1;
+    background: #0a0a0a;
+    border: 2px solid #f900ff;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+}
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(249, 0, 255, 0.1);
+    border-bottom: 1px solid #f900ff;
+    color: #f900ff;
+}
+#clear-log {
+    background: transparent;
+    border: 1px solid #f900ff;
+    color: #f900ff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#mission-log {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+}
+.log-entry.info { color: #ecf0f1; }
+.log-entry.success { color: #2ecc71; }
+.log-entry.error { color: #e74c3c; font-weight: bold; }
+
+/* Editor */
+.code-editor {
+    background: #0a0a0a;
+    border: 2px solid #00ff00;
+    border-radius: 8px;
+}
+.editor-header {
+    padding: 8px 12px;
+    background: rgba(0, 255, 0, 0.1);
+    border-bottom: 1px solid #00ff00;
+    color: #00ff00;
+}
+#code-input {
+    width: 100%;
+    height: 150px;
+    background: #000000;
+    border: none;
+    color: #2ecc71;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    padding: 12px;
+    resize: none;
+    outline: none;
+}
+
+/* Botones */
+.action-buttons { display: flex; flex-direction: column; gap: 12px; }
+.command-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cmd-btn {
+    background: linear-gradient(135deg, #c300ff, #f900ff);
+    border: none; padding: 10px; border-radius: 6px;
+    color: white; font-weight: bold; cursor: pointer;
+}
+.control-buttons { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; }
+.primary-btn {
+    background: linear-gradient(135deg, #00eaff, #00ff73);
+    color: #000; border: none; padding: 12px;
+    border-radius: 6px; font-weight: bold; cursor: pointer;
+}
+.secondary-btn {
+    background: linear-gradient(135deg, #FF9800, #F44336);
+    color: white; border: none; padding: 12px;
+    border-radius: 6px; font-weight: bold; cursor: pointer;
+}
+button { transition: all 0.2s ease; }
+button:hover { transform: translateY(-2px); }
+
+/* Botones de Navegación */
+.navigation-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+.help-btn, .map-btn {
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.help-btn { background: linear-gradient(135deg, #007bff, #0056b3); }
+.map-btn { background: linear-gradient(135deg, #6c757d, #343a40); }
+
+/* --- MODALES (TUTORIAL) --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: linear-gradient(135deg, #1f0023, #0f0011);
+    border: 3px solid #f900ff;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    color: white;
+    max-width: 600px;
+}
+.modal-content h1 { font-size: 2em; margin-bottom: 15px; }
+.modal-content button {
+    background: linear-gradient(135deg, #00eaff, #00ff73);
+    color: #000;
+    border: none; padding: 12px 25px; border-radius: 8px;
+    font-weight: bold; cursor: pointer; margin-top: 15px;
+}
+.modal-content button.secondary-btn {
+    background: linear-gradient(135deg, #FF9800, #F44336);
+    color: white;
+}
+
+/* Estilos del Tutorial Animado */
+.tutorial-step {
+    display: none;
+    text-align: left;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+.tutorial-step.active { display: block; }
+.code-example {
+    background: #0a0a0a;
+    border: 1px solid #555;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-family: 'Courier New', monospace;
+}
+.code-example code { color: #2ecc71; }
+.code-example p { color: #999; margin-bottom: 0; }
+
+.index-example p {
+    font-size: 1.1em;
+    font-family: 'Courier New', monospace;
+    color: #ecf0f1;
+}
+.index-example span {
+    color: #f1c40f;
+    font-weight: bold;
+}
+
+.tutorial-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+#tutorial-step-counter { font-weight: bold; }
+#start-button {
+    margin-top: 20px;
+    width: 100%;
+}

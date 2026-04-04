@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isla 5: Arrays - El DJ de la Isla</title>
+    <link rel="stylesheet" href="primerJ.css">
+</head>
+<body>
+    <div id="victory-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>🎵 ¡FIESTA TOTAL! 🎵</h1>
+            <p>¡Tocaste la canción correcta! Has aprendido sobre <strong>Arrays</strong> e <strong>Índices</strong>.</p>
+            <button id="next-level-button">Siguiente Nivel 🎧</button>
+        </div>
+    </div>
+    
+    <div id="gameover-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>😫 ¡ABUCHEOS! 😫</h1>
+            <p id="gameover-reason">¡Esa no era la canción que querían!</p>
+            <button id="retry-button">Intentar de Nuevo 🔄</button>
+        </div>
+    </div>
+
+    <div id="tutorial-modal" class="modal-overlay">
+        <div class="modal-content tutorial">
+            <h1>👋 ¡ISLA 5: LISTAS (ARRAYS)!</h1>
+            
+            <div class="tutorial-step active" data-step="1">
+                <h3>🎯 OBJETIVO</h3>
+                <p>¡Bienvenido a la fiesta! Eres el DJ. Un aldeano te pide una canción específica de tu lista.</p>
+                <p><strong>Misión:</strong> Tocar la canción <strong>'Rock'</strong>.</p>
+            </div>
+            
+            <div class="tutorial-step" data-step="2">
+                <h3>📦 ¿QUÉ ES UN ARRAY?</h3>
+                <p>Un <strong>Array</strong> es una variable especial que funciona como una "lista" o una "caja con compartimentos".</p>
+                <p>La creamos usando corchetes <code>[ ]</code>.</p>
+                <div class="code-example">
+                    <code>let lista_canciones = ['Pop', 'Rock', 'Clásica', 'Reggae'];</code>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="3">
+                <h3>🔢 EL ÍNDICE (LA CLAVE)</h3>
+                <p>Para seleccionar un elemento de la lista, usamos su <strong>índice</strong> (su posición).</p>
+                <p>¡MUY IMPORTANTE! En programación, las listas <strong>empiezan a contar desde CERO (0)</strong>.</p>
+                <div class="code-example index-example">
+                    <p><code>[ 'Pop', 'Rock', 'Clásica', 'Reggae' ]</code></p>
+                    <p><span>&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span>&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="4">
+                <h3>🎸 ¿CÓMO PEDIMOS 'ROCK'?</h3>
+                <p>Viendo la lista, 'Rock' está en la posición número <strong>1</strong>.</p>
+                <div class="code-example">
+                    <p>Para obtener 'Pop' -> <code>lista_canciones[0]</code></p>
+                    <p>Para obtener 'Rock' -> <code>lista_canciones[1]</code></p>
+                    <p>Para obtener 'Clásica' -> <code>lista_canciones[2]</code></p>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="5">
+                <h3>✅ TU MISIÓN</h3>
+                <p>Usa el comando <code>tocar_cancion()</code> y pásale la canción 'Rock' usando su índice.</p>
+                <div class="code-example">
+                    <p>// El juego ya te da la 'lista_canciones'</p>
+                    <code>tocar_cancion(lista_canciones[1]);</code>
+                </div>
+                <p>¡No escribas "Rock"! ¡Usa el índice!</p>
+            </div>
+
+            <div class="tutorial-nav">
+                <button id="tutorial-prev" class="secondary-btn">Anterior</button>
+                <span id="tutorial-step-counter">Paso 1 / 5</span>
+                <button id="tutorial-next" class="primary-btn">Siguiente</button>
+            </div>
+            <button id="start-button" class="primary-btn hidden">¡A TOCAR! 💻</button>
+        </div>
+    </div>
+    <div id="game-container" class="hidden">
+        <div class="game-world">
+            <div id="dj-booth">
+                <div class="dj">🎧</div>
+                <div id="song-request">
+                    ¡Toca <strong>"Rock"</strong>!
+                </div>
+            </div>
+            <div id="main-display-screen">
+                <div id="song-title">...silencio...</div>
+            </div>
+            <div id="dance-floor">
+                <div class="villager"></div>
+                <div class="villager"></div>
+                <div class="villager"></div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="panel-header">
+                <h1>🎧 DJ DE LA ISLA</h1>
+                <div class="level-info">
+                    <span id="level-title">Nivel 5.1: Arrays [ ]</span>
+                    <div id="tries-counter">
+                        <span>💖 Vidas:</span>
+                        <span id="tries-count">3/3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mission-log-container">
+                <div class="log-header">
+                    <span>📋 SETLIST</span>
+                    <button id="clear-log">🗑️</button>
+                </div>
+                <div id="mission-log">
+                    <div class="log-entry info">Setlist:</div>
+                    <div class="log-entry info">[ 'Pop', 'Rock', 'Clásica', 'Reggae' ]</div>
+                </div>
+            </div>
+
+            <div class="code-editor">
+                <div class="editor-header">
+                    <span>📝 CONSOLA DEL DJ</span>
+                    <span class="editor-tips">💡 Ctrl+Enter</span>
+                </div>
+                <textarea id="code-input" placeholder="// tocar_cancion(lista_canciones[...]);"></textarea>
+            </div>
+
+            <div class="action-buttons">
+                <div class="command-buttons">
+                    <button id="btn-play" class="cmd-btn">tocar_cancion( );</button>
+                    <button id="btn-list" class="cmd-btn">lista_canciones[ ]</button>
+                </div>
+                <div class="control-buttons">
+                    <button id="run-button" class="primary-btn">▶ TOCAR</button>
+                    <button id="reset-button" class="secondary-btn">🔄 REINICIAR</button>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button id="back-to-tutorial" class="help-btn">📚 VER TUTORIAL</button>
+                    <button id="back-to-map" class="map-btn">🗺️ VOLVER AL MAPA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="primerJ.js"></script>
+</body>
+</html>

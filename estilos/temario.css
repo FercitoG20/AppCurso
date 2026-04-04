@@ -1,0 +1,158 @@
+/* --- ESTILOS ESPECÍFICOS DE TEMARIO.HTML (DINÁMICO) --- */
+
+/* Encabezado de página */
+#page-header {
+    background: var(--dark-bg);
+    color: #fff;
+    padding: 80px 0; /* Más padding */
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+/* Efecto de fondo sutil */
+#page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 70%);
+    opacity: 0.5;
+    z-index: 1;
+}
+#page-header h2 {
+    font-size: 3.5rem; /* Más grande */
+    margin: 0;
+    font-weight: 700;
+    color: var(--primary-color);
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 0 15px rgba(0,0,0,0.3); /* Sombra de texto */
+}
+#page-header p {
+    font-size: 1.3rem; /* Más grande */
+    opacity: 0.9;
+    margin: 15px 0 0 0;
+    position: relative;
+    z-index: 2;
+}
+
+/* Contenedor del Acordeón */
+#temario-detalle {
+    padding: 100px 25px; /* Más padding */
+    max-width: 900px;
+    margin: 0 auto;
+}
+.accordion-item {
+    background: #fff;
+    margin-bottom: 25px;
+    border-radius: 15px; /* Más redondeado */
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    /* Animación de entrada al cargar */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out, box-shadow 0.3s ease, border-radius 0.3s ease;
+}
+.accordion-item.is-visible { /* Clase JS para mostrar */
+    opacity: 1;
+    transform: translateY(0);
+}
+.accordion-item:hover {
+    box-shadow: var(--hover-shadow);
+    transform: translateY(-5px); /* Pequeño levantamiento */
+}
+.accordion-header {
+    background: var(--primary-color);
+    color: #fff;
+    padding: 28px 35px; /* Más padding */
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    position: relative;
+    z-index: 2; /* Para que el texto esté encima del pseudo-elemento */
+}
+.accordion-header::before { /* Efecto de brillo al hover */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+.accordion-header:hover::before {
+    opacity: 1;
+}
+
+.accordion-item.active .accordion-header {
+    background: var(--secondary-color);
+    border-bottom-left-radius: 0; /* Sin redondeo abajo cuando está abierto */
+    border-bottom-right-radius: 0;
+}
+.accordion-header:hover {
+    background: var(--secondary-color);
+}
+.accordion-header h2 {
+    margin: 0;
+    font-size: 1.8rem; /* Más grande */
+    font-weight: 600;
+}
+.accordion-icon {
+    font-size: 2.5rem; /* Más grande */
+    font-weight: 300;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    color: var(--accent-color); /* Color de acento para el icono */
+}
+.accordion-item.active .accordion-icon {
+    transform: rotate(45deg);
+    color: #fff; /* Icono blanco cuando está activo */
+}
+
+/* Contenido del acordeón */
+.accordion-content {
+    background: #fdfdff;
+    padding: 0 35px; /* Padding ajustado */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.6s ease-out, padding 0.6s ease-out; /* Transición más suave y larga */
+    border-top: 1px solid rgba(0,0,0,0.05); /* Borde sutil arriba */
+}
+.accordion-item.active .accordion-content {
+    padding: 35px;
+    max-height: 1000px;
+    box-shadow: inset 0 3px 10px rgba(0,0,0,0.03); /* Sombra interior */
+}
+.accordion-content ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+.accordion-content li {
+    padding: 18px 10px; /* Más padding */
+    border-bottom: 1px dashed #e0e0e0; /* Borde punteado */
+    font-size: 1.15rem; /* Un poco más grande */
+    color: #555;
+    line-height: 1.6;
+    transition: background-color 0.2s ease;
+}
+.accordion-content li:hover {
+    background-color: #f7f7f7;
+}
+.accordion-content li:last-child {
+    border-bottom: none;
+}
+.accordion-content li strong {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-right: 10px;
+}

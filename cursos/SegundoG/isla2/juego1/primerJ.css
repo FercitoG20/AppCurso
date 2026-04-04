@@ -1,0 +1,304 @@
+/* --- ESTILOS GENERALES (Similares al anterior) --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: #ffffff;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#game-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+    gap: 0;
+}
+
+.hidden { display: none !important; }
+
+/* --- NUEVOS ESTILOS: LABORATORIO (Panel Izquierdo) --- */
+.game-world {
+    background: #0d1b2a;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-right: 3px solid #764ba2;
+}
+
+#recipe-display {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid #764ba2;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+#recipe-display h3 {
+    color: #ff9800;
+    border-bottom: 1px solid #ff9800;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+#recipe-display ul {
+    list-style: none;
+}
+#recipe-display li {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+#recipe-display li.completed {
+    opacity: 1;
+    color: #00ff00;
+    text-decoration: line-through;
+}
+
+#lab-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#cauldron {
+    width: 200px;
+    height: 200px;
+    background: #333;
+    border: 10px solid #555;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+#cauldron span {
+    position: absolute;
+    bottom: 10px;
+    color: #fff;
+    font-weight: bold;
+    z-index: 10;
+}
+#potion-liquid {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 0; /* Se llenará con JS */
+    background: #4fc3f7;
+    transition: all 0.5s ease;
+    opacity: 0.7;
+}
+
+#shelf {
+    display: flex;
+    gap: 15px;
+    background: #3e2723;
+    padding: 15px;
+    border-radius: 8px;
+    border: 3px solid #5d4037;
+}
+.ingredient {
+    width: 70px;
+    height: 90px;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: default;
+    transition: all 0.3s ease;
+}
+.ingredient[data-name="agua_brillante"] { background: #03a9f4; }
+.ingredient[data-name="hierba_roja"] { background: #f44336; }
+.ingredient[data-name="polvo_seta"] { background: #9c27b0; }
+.ingredient.used {
+    opacity: 0.3;
+    transform: scale(0.9);
+}
+
+
+/* --- PANEL DE CONTROL (Similar al anterior) --- */
+.control-panel {
+    background: #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 15px;
+    overflow-y: auto;
+}
+
+.panel-header {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #764ba2;
+}
+.panel-header h1 {
+    color: #667eea;
+    font-size: 1.5em;
+}
+.level-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+}
+#tries-count { color: #4fc3f7; }
+
+/* Bitácora */
+#mission-log-container {
+    flex: 1;
+    background: #0a0a0a;
+    border: 2px solid #ff9800;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+}
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(255, 152, 0, 0.1);
+    border-bottom: 1px solid #ff9800;
+    color: #ff9800;
+}
+#clear-log {
+    background: transparent;
+    border: 1px solid #ff9800;
+    color: #ff9800;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#mission-log {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+}
+.log-entry.info { color: #4fc3f7; }
+.log-entry.success { color: #00ff00; }
+.log-entry.error { color: #ff6b6b; font-weight: bold; }
+
+/* Editor */
+.code-editor {
+    background: #0a0a0a;
+    border: 2px solid #4fc3f7;
+    border-radius: 8px;
+}
+.editor-header {
+    padding: 8px 12px;
+    background: rgba(79, 195, 247, 0.1);
+    border-bottom: 1px solid #4fc3f7;
+    color: #4fc3f7;
+}
+#code-input {
+    width: 100%;
+    height: 150px;
+    background: #000000;
+    border: none;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    padding: 12px;
+    resize: none;
+    outline: none;
+}
+
+/* Botones */
+.action-buttons { display: flex; flex-direction: column; gap: 12px; }
+.command-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.cmd-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none; padding: 10px; border-radius: 6px;
+    color: white; font-weight: bold; cursor: pointer;
+}
+.control-buttons { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; }
+.primary-btn {
+    background: linear-gradient(135deg, #00b09b, #96c93d);
+    color: white; border: none; padding: 12px;
+    border-radius: 6px; font-weight: bold; cursor: pointer;
+}
+.secondary-btn {
+    background: linear-gradient(135deg, #ff8c00, #ff2e00);
+    color: white; border: none; padding: 12px;
+    border-radius: 6px; font-weight: bold; cursor: pointer;
+}
+button { transition: all 0.2s ease; }
+button:hover { transform: translateY(-2px); }
+
+
+/* ########################################## */
+/* ######       NUEVOS ESTILOS CSS     ###### */
+/* ########################################## */
+.navigation-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.help-btn, .map-btn {
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.help-btn {
+    background: linear-gradient(135deg, #007bff, #0056b3); /* Azul */
+}
+
+.map-btn {
+    background: linear-gradient(135deg, #6c757d, #343a40); /* Gris */
+}
+/* ########################################## */
+/* ######       FIN BLOQUE NUEVO       ###### */
+/* ########################################## */
+
+
+/* --- MODALES (Similares al anterior) --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 3px solid #764ba2;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    color: white;
+}
+.modal-content h1 { font-size: 2em; margin-bottom: 15px; }
+.modal-content button {
+    background: linear-gradient(135deg, #00b09b, #96c93d);
+    border: none; padding: 12px 25px; border-radius: 8px;
+    color: white; font-weight: bold; cursor: pointer; margin-top: 15px;
+}
+.tutorial .step {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px 0;
+    text-align: left;
+}
+.tutorial code {
+    background: #000;
+    color: #00ff00;
+    padding: 2px 5px;
+    border-radius: 3px;
+}

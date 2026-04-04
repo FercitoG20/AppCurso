@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isla 10: Objetos</title>
+    <link rel="stylesheet" href="primerJ.css">
+</head>
+<body>
+    <div id="victory-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>🎉 ¡MISIÓN CUMPLIDA, AGENTE! 🎉</h1>
+            <p>¡Has dominado los <strong>Objetos</strong> y la notación de punto!</p>
+            <p><strong>¡Nivel 10.1 superado!</strong></p>
+            <button id="next-level-button">Continuar 🕵️‍♂️</button>
+            </div>
+    </div>
+    
+    <div id="gameover-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h1>🚨 ¡ALARMA ACTIVADA! 🚨</h1>
+            <p id="gameover-reason">¡Datos de acceso incorrectos!</p>
+            <button id="retry-button">Intentar de Nuevo 🔄</button>
+        </div>
+    </div>
+
+    <div id="tutorial-modal" class="modal-overlay">
+        <div class="modal-content tutorial">
+            <h1>👋 ¡ISLA 10: OBJETOS!</h1>
+            
+            <div class="tutorial-step active" data-step="1">
+                <h3>🎯 OBJETIVO</h3>
+                <p>¡Bienvenido, Agente! Misión: 'Graduación'.</p>
+                <p>Debes abrir la bóveda central usando el comando <code>ingresar_al_sistema(id, clave)</code>.</p>
+            </div>
+            
+            <div class="tutorial-step" data-step="2">
+                <h3>📦 EL MALETÍN (OBJETO)</h3>
+                <p>Los datos están en este "maletín" digital. En programación, esto es un <strong>Objeto</strong>.</p>
+                <p>Un Objeto es una variable que guarda *otras variables* dentro de ella, usando "llaves" y "valores".</p>
+            </div>
+
+            <div class="tutorial-step" data-step="3">
+                <h3>LLAVE : VALOR</h3>
+                <p>Los objetos se ven así:</p>
+                <div class="code-example">
+                    <code>let maletin = {</code><br>
+                    <code>&nbsp;&nbsp;usuario: 'Agente001',</code><br>
+                    <code>&nbsp;&nbsp;password: 987,</code><br>
+                    <code>&nbsp;&nbsp;activo: true</code><br>
+                    <code>};</code>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="4">
+                <h3>⚙️ LA NOTACIÓN DE PUNTO (.)</h3>
+                <p>Para *leer* un valor de un objeto, usamos un <strong>punto (`.`)</strong> y el nombre de la "llave" (la propiedad).</p>
+                <div class="code-example">
+                    <code>maletin.usuario</code><br>
+                    <p>// Esto nos da el valor 'Agente001'</p>
+                    <code>maletin.password</code><br>
+                    <p>// Esto nos da el valor 987</p>
+                </div>
+            </div>
+
+            <div class="tutorial-step" data-step="5">
+                <h3>✅ TU MISIÓN</h3>
+                <p>El juego te da el objeto <code>maletin_secreto</code>.</p>
+                <p>1. Crea una variable <code>user</code> y guarda <code>maletin_secreto.id_agente</code>.</p>
+                <p>2. Crea una variable <code>pass</code> y guarda <code>maletin_secreto.clave_final</code>.</p>
+                <p>3. Llama a <code>ingresar_al_sistema(user, pass)</code>.</p>
+            </div>
+
+            <div class="tutorial-nav">
+                <button id="tutorial-prev" class="secondary-btn">Anterior</button>
+                <span id="tutorial-step-counter">Paso 1 / 5</span>
+                <button id="tutorial-next" class="primary-btn">Siguiente</button>
+            </div>
+            <button id="start-button" class="primary-btn hidden">¡ACEPTO LA MISIÓN! 💻</button>
+        </div>
+    </div>
+    <div id="game-container" class="hidden">
+        <div class="game-world">
+            <div id="vault-door">
+                <div id="access-panel" class="denied">
+                    <h2>SISTEMA DE BÓVEDA</h2>
+                    <p id="access-status">ACCESO DENEGADO</p>
+                    <div class="input-field">
+                        <span>USUARIO:</span>
+                        <span id="user-display">---</span>
+                    </div>
+                    <div class="input-field">
+                        <span>CLAVE:</span>
+                        <span id="pass-display">---</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="panel-header">
+                <h1>🕵️‍♂️ AGENCIA DE CÓDIGO</h1>
+                <div class="level-info">
+                    <span id="level-title">Nivel 10.1: Objetos { }</span>
+                    <div id="tries-counter">
+                        <span>💖 Vidas:</span>
+                        <span id="tries-count">3/3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mission-log-container">
+                <div class="log-header">
+                    <span>📋 CONSOLA DE AGENTE</span>
+                    <button id="clear-log">🗑️</button>
+                </div>
+                <div id="mission-log"></div>
+            </div>
+
+            <div class="code-editor">
+                <div class="editor-header">
+                    <span>📝 TERMINAL</span>
+                    <span class="editor-tips">💡 Ctrl+Enter</span>
+                </div>
+                <textarea id="code-input" placeholder="// let usuario = maletin_secreto.id_agente;"></textarea>
+            </div>
+
+            <div class="action-buttons">
+                <div class="command-buttons">
+                    <button id="btn-let" class="cmd-btn">let ... = ...</button>
+                    <button id="btn-dot" class="cmd-btn">maletin_secreto. ...</button>
+                    <button id="btn-login" class="cmd-btn">ingresar_al_sistema( , )</button>
+                </div>
+                <div class="control-buttons">
+                    <button id="run-button" class="primary-btn">▶ EJECUTAR</button>
+                    <button id="reset-button" class="secondary-btn">🔄 REINICIAR</button>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button id="back-to-tutorial" class="help-btn">📚 VER TUTORIAL</button>
+                    <button id="back-to-map" class="map-btn">🗺️ VOLVER AL MAPA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="primerJ.js"></script>
+</body>
+</html>

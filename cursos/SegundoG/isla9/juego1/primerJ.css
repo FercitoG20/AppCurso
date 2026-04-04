@@ -1,0 +1,289 @@
+/* --- ESTILOS GENERALES --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f0f4f8, #cfd9e0);
+    color: #333;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#game-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+    gap: 0;
+}
+
+.hidden { display: none !important; }
+
+/* --- ESTILOS: HABITACIÓN (Panel Izquierdo) --- */
+.game-world {
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-right: 3px solid #4A90E2;
+    position: relative;
+    gap: 20px;
+}
+
+#room-area {
+    flex: 1;
+    background: #fdfdfd;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+#robot-assistant {
+    font-size: 4em;
+    transition: transform 0.3s ease;
+}
+#robot-action-bubble {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -150%);
+    font-size: 2em;
+    background: #fff;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+}
+#plant { font-size: 3em; }
+#trash { font-size: 3em; }
+
+#checklist-board {
+    background: #333;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    border: 5px solid #555;
+}
+#checklist-board h3 {
+    text-align: center;
+    color: #F5A623;
+    border-bottom: 2px solid #F5A623;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+#task-list {
+    list-style: none;
+    font-size: 1.2em;
+    font-family: 'Courier New', monospace;
+}
+#task-list li {
+    padding: 5px;
+    opacity: 0.7;
+    transition: all 0.5s ease;
+}
+#task-list li.completed {
+    opacity: 1;
+    color: #2ecc71;
+    text-decoration: line-through;
+}
+#task-list li.completed::before {
+    content: '✔️ ';
+}
+#task-list li::before {
+    content: '◻️ ';
+}
+
+/* --- PANEL DE CONTROL --- */
+.control-panel {
+    background: #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 15px;
+    overflow-y: auto;
+}
+
+.panel-header {
+    text-align: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #4A90E2;
+}
+.panel-header h1 {
+    color: #4A90E2;
+    font-size: 1.5em;
+}
+.level-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    color: white;
+}
+#tries-count { color: #e74c3c; }
+
+/* Bitácora */
+#mission-log-container {
+    flex: 1;
+    background: #0a0a0a;
+    border: 2px solid #4A90E2;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+}
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: rgba(74, 144, 226, 0.1);
+    border-bottom: 1px solid #4A90E2;
+    color: #4A90E2;
+}
+#clear-log {
+    background: transparent;
+    border: 1px solid #4A90E2;
+    color: #4A90E2;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#mission-log {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+}
+.log-entry.info { color: #ecf0f1; }
+.log-entry.success { color: #2ecc71; }
+.log-entry.error { color: #e74c3c; font-weight: bold; }
+.log-entry.loop { color: #f1c40f; }
+
+/* Editor */
+.code-editor {
+    background: #0a0a0a;
+    border: 2px solid #777;
+    border-radius: 8px;
+}
+.editor-header {
+    padding: 8px 12px;
+    background: rgba(119, 119, 119, 0.1);
+    border-bottom: 1px solid #777;
+    color: #777;
+}
+#code-input {
+    width: 100%;
+    height: 150px;
+    background: #000000;
+    border: none;
+    color: #2ecc71;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    padding: 12px;
+    resize: none;
+    outline: none;
+}
+
+/* Botones */
+.action-buttons { display: flex; flex-direction: column; gap: 12px; }
+.command-buttons { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.cmd-btn {
+    background: linear-gradient(135deg, #4A90E2, #357ABD);
+    border: none; padding: 10px; border-radius: 6px;
+    color: white; font-weight: bold; cursor: pointer;
+}
+.control-buttons { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; }
+.primary-btn {
+    background: linear-gradient(135deg, #2ecc71, #28a745);
+    color: #fff; border: none; padding: 12px;
+    border-radius: 6px; font-weight: bold; cursor: pointer;
+}
+.secondary-btn {
+    background: linear-gradient(135deg, #FF9800, #F44336);
+    color: white; border: none; padding: 12px;
+    border-radius: 6px; font-weight: bold; cursor: pointer;
+}
+button { transition: all 0.2s ease; }
+button:hover { transform: translateY(-2px); }
+
+/* Botones de Navegación */
+.navigation-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+.help-btn, .map-btn {
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+.help-btn { background: linear-gradient(135deg, #007bff, #0056b3); }
+.map-btn { background: linear-gradient(135deg, #6c757d, #343a40); }
+
+/* --- MODALES (TUTORIAL) --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: linear-gradient(135deg, #1f2a40, #182848);
+    border: 3px solid #4A90E2;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    color: white;
+    max-width: 600px;
+}
+.modal-content h1 { font-size: 2em; margin-bottom: 15px; }
+.modal-content button {
+    background: linear-gradient(135deg, #2ecc71, #28a745);
+    color: #fff;
+    border: none; padding: 12px 25px; border-radius: 8px;
+    font-weight: bold; cursor: pointer; margin-top: 15px;
+}
+.modal-content button.secondary-btn {
+    background: linear-gradient(135deg, #FF9800, #F44336);
+    color: white;
+}
+
+/* Estilos del Tutorial Animado */
+.tutorial-step {
+    display: none;
+    text-align: left;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+.tutorial-step.active { display: block; }
+.code-example {
+    background: #0a0a0a;
+    border: 1px solid #555;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-family: 'Courier New', monospace;
+}
+.code-example code { color: #2ecc71; }
+.code-example strong { color: #f1c40f; }
+.code-example p { color: #999; margin-bottom: 0; }
+.tutorial-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+#tutorial-step-counter { font-weight: bold; }
+#start-button {
+    margin-top: 20px;
+    width: 100%;
+}
