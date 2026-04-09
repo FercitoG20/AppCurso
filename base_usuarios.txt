@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    nombres VARCHAR(100) NOT NULL,
+    apellido_paterno VARCHAR(100) NOT NULL,
+    apellido_materno VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    rol ENUM('estudiante', 'admin') DEFAULT 'estudiante',
+    ultimo_acceso DATETIME DEFAULT NULL
+) ENGINE=InnoDB;
