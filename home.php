@@ -53,7 +53,7 @@
                     <span class="card-year code-font">1ER GRADO</span>
                     <h3>Lógica y Algoritmos</h3>
                     <p>Los cimientos. Aprende a estructurar tus ideas y descubre cómo piensan las computadoras resolviendo problemas con pseudocódigo.</p>
-                    <button class="btn-info" data-link="cursos/PrimerG/mapa1.html">Ver Módulo <i class="ri-arrow-right-line"></i></button>
+                    <button class="btn-info" data-link="cursos/PrimerG/mapa1.php">Ver Módulo <i class="ri-arrow-right-line"></i></button>
                 </div>
             </article>
 
@@ -63,7 +63,7 @@
                     <span class="card-year code-font">2DO GRADO</span>
                     <h3>Estructuras y Datos</h3>
                     <p>Toma el control. Manipula ciclos, condiciones y almacenamiento básico en memoria usando vectores y matrices unidimensionales.</p>
-                    <button class="btn-info" data-link="cursos/SegundoG/mapa2.html">Ver Módulo <i class="ri-arrow-right-line"></i></button>
+                    <button class="btn-info" data-link="cursos/SegundoG/mapa2.php">Ver Módulo <i class="ri-arrow-right-line"></i></button>
                 </div>
             </article>
 
@@ -73,7 +73,7 @@
                     <span class="card-year code-font">3ER GRADO</span>
                     <h3>P.O.O. y Proyectos</h3>
                     <p>Construye el futuro. Domina el paradigma de Orientación a Objetos creando clases y desarrollando aplicaciones reales.</p>
-                    <button class="btn-info" data-link="cursos/TercerG/mapa3.html">Ver Módulo <i class="ri-arrow-right-line"></i></button>
+                    <button class="btn-info" data-link="cursos/TercerG/mapa3.php">Ver Módulo <i class="ri-arrow-right-line"></i></button>
                 </div>
             </article>
         </div>

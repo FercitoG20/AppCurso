@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../../Navegaciones/login/login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,18 +12,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa 3D - Aventura de Programación</title>
     <link rel="stylesheet" href="mapa1.css">
+    
 </head>
 <body>
+
+    <div class="top-nav-map">
+        <button id="home-button" title="Volver al Home" onclick="window.location.href='../../home.php'">
+            🏠 Home
+        </button>
+        
+        <div class="user-pill">
+            <i class="ri-user-fill"></i> 
+            <?php 
+                echo htmlspecialchars($_SESSION['usuario_nombre'] . ' ' . 
+                $_SESSION['usuario_paterno'] . ' ' . 
+                $_SESSION['usuario_materno']); 
+            ?>
+        </div>
+    </div>
 
     <h1 id="main-title">
         Primer Curso de Programación
         <span>Nivel Bachillerato</span>
     </h1>
 
-    <button h id="home-button" title="Volver al Home">🏠 Home</button>
     <button id="back-to-map" class="map-btn">🗺️ VOLVER AL MAPA</button>
-    
     <button id="reset-view-button" title="Resetear Vista">🌍 Vista General</button>
+    
     <canvas id="map-canvas"></canvas>
 
     <div id="level-popup" class="hidden">
@@ -30,20 +52,10 @@
     <script src="../../librerias/CSS2DRenderer.js"></script>
     <script src="../../librerias/OrbitControls.js"></script>
     <script src="../../librerias/tween.umd.js"></script>
-    
     <script src="mapa1.js"></script>
-<script type="module">
-    import { verificarAutenticacion } from '../../librerias/checkAuth.js';
-    
-    // Verificar autenticación antes de cargar cualquier cosa
-    verificarAutenticacion().then(user => {
-        console.log("✅ Página de mapa: Usuario autenticado", user.email);
-        // Aquí inicializa tu mapa o juego
-        // init(); // Tu función de inicialización
-    }).catch(error => {
-        console.error("❌ Error de autenticación:", error);
-        // No es necesario hacer nada, ya redirigió a login
-    });
-</script>
+
+    <script>
+        console.log("🎮 Mapa cargado para: <?php echo $_SESSION['usuario_nombre']; ?>");
+    </script>
 </body>
 </html>

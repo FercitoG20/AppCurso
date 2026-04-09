@@ -139,7 +139,7 @@ function init() {
     // --- 6. Configurar Botones UI ---
     closeButtonEl.addEventListener('click', hidePopup);
     const homeButton = document.getElementById('home-button');
-    homeButton.addEventListener('click', () => { window.location.href = '../../home.html'; });
+    homeButton.addEventListener('click', () => { window.location.href = '../../home.php'; });
     const resetViewButton = document.getElementById('reset-view-button');
     resetViewButton.addEventListener('click', resetCameraView);
 

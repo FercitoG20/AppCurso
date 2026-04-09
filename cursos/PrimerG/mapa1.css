@@ -16,7 +16,7 @@ body {
     z-index: 1; /* Asegurar que esté detrás */
 }
 
-/* --- Estilos de la Popup (Dark Mode) --- */
+
 #level-popup {
     position: absolute;
     top: 50%;
@@ -98,8 +98,39 @@ body {
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
     background-color: rgba(0, 0, 0, 0.85);
 }
+.user-pill {
+    background: rgba(255, 165, 0, 0.85);
+    padding: 8px 18px;
+    border-radius: 12px;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+}
 
-/* --- Estilos para el Título Flotante --- */
+.top-nav-map {
+    position: fixed;
+    top: 20px;
+    left: 20px; 
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 1000;
+}
+
+
+
+#home-button {
+    position: static !important; 
+    margin: 0 !important;
+}
+
 #main-title {
     position: absolute;
     top: 20px;
@@ -110,13 +141,12 @@ body {
     font-size: 28px;
     text-align: center;
     text-shadow: 0 0 10px #00FFCC, 0 0 20px #00FFCC;
-    z-index: 50; /* Por debajo de la popup */
+    z-index: 50; 
     pointer-events: none;
     line-height: 1.2;
 }
 #main-title span { font-size: 18px; color: #00FFCC; display: block; }
 
-/* --- Estilos para el Botón Home --- */
 #home-button {
     position: absolute;
     top: 20px;
@@ -137,7 +167,6 @@ body {
 }
 #home-button:hover { transform: scale(1.05); box-shadow: 0 0 15px #2196F3; }
 
-/* --- Estilos para el Botón Resetear Vista --- */
 #reset-view-button {
     position: absolute;
     top: 20px;
