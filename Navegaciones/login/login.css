@@ -1,0 +1,200 @@
+/* --- CONTENEDOR PRINCIPAL --- */
+.login-main {
+    min-height: calc(100vh - 200px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 950px;
+}
+
+/* --- TARJETA PRINCIPAL (GLASSMorphism) --- */
+.login-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    overflow: hidden;
+    border-radius: 25px;
+    border: 1px solid rgba(0, 188, 212, 0.2);
+    /* Fondo principal: Blanco muy traslúcido para evitar el gris */
+    background: rgba(255, 255, 255, 0.7); 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* --- SECCIÓN HERO (IZQUIERDA) --- */
+.login-hero {
+    /* Un tono azul cian muy suave para el fondo del hero */
+    background: rgba(0, 188, 212, 0.05);
+    padding: 50px;
+    border-right: 1px solid rgba(0, 188, 212, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-badge {
+    width: 50px;
+    height: 50px;
+    background: #0099cc; /* Azul sólido */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0, 153, 204, 0.3);
+}
+
+.login-hero h1 { 
+    font-size: 2.8rem; 
+    margin-bottom: 15px; 
+    color: #1a1a1a; /* Texto oscuro para claridad */
+    font-weight: 800;
+}
+
+.login-hero p { 
+    color: #555; 
+    line-height: 1.6; 
+    margin-bottom: 30px; 
+}
+
+/* --- SECCIÓN FORMULARIO (DERECHA - ELIMINADO EL GRIS) --- */
+.login-form-side {
+    padding: 50px;
+    background: #ffffff; /* Fondo blanco sólido para eliminar cualquier rastro de gris */
+}
+
+.login-form-side h2 { 
+    color: #007bb5; /* Azul institucional */
+    margin-bottom: 8px; 
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.subtitle { 
+    color: #666; 
+    font-size: 0.95rem; 
+    margin-bottom: 30px; 
+    display: block;
+}
+
+/* --- DISEÑO DE INPUTS --- */
+.form-group { 
+    margin-bottom: 18px; 
+    text-align: left;
+}
+
+.form-group label { 
+    display: block; 
+    color: #333; 
+    margin-bottom: 6px; 
+    font-size: 0.9rem; 
+    font-weight: 600;
+}
+
+/* FILA DE APELLIDOS (Nombres y Apellidos en orden) */
+.form-row {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 14px;
+    background: #fcfcfc; /* Blanco casi puro */
+    border: 1.5px solid #e0e0e0;
+    border-radius: 10px;
+    color: #333;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #0099cc;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 153, 204, 0.1);
+}
+
+/* --- BOTONES --- */
+.login-btn { 
+    width: 100%; 
+    padding: 14px;
+    background: #0099cc;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.3s;
+}
+
+.login-btn:hover {
+    background: #007bb5;
+}
+
+/* Visibilidad de contraseña */
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-btn {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    display: flex;
+}
+
+/* Links inferiores */
+.register-text {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.register-text a { 
+    color: #0099cc; 
+    font-weight: 700; 
+    text-decoration: none; 
+}
+
+.register-text a:hover {
+    text-decoration: underline;
+}
+
+/* --- MODO OSCURO (Solo si tienes la clase en el body) --- */
+body.dark-mode .login-grid { background: rgba(10, 25, 41, 0.8); }
+body.dark-mode .login-form-side { background: #0a1929; }
+body.dark-mode .form-group input { background: #132f4c; border-color: #1e4976; color: #fff; }
+body.dark-mode .login-hero h1 { color: #fff; }
+body.dark-mode .form-group label { color: #eee; }
+
+/* --- RESPONSIVO --- */
+@media (max-width: 850px) {
+    .login-grid { grid-template-columns: 1fr; }
+    .login-hero { display: none; }
+    .form-row { flex-direction: column; gap: 0; }
+}

@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Temario | ProgFundamentos</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
-    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="../../home.css">
 </head>
 <body>
     <div class="progress-container"><div class="progress-bar" id="scroll-bar"></div></div>
     <div class="ambient-glow"></div>
     
-    <?php include 'encabezado.php'; ?>
+    <?php include '../../encabezado.php'; ?>
 
     <main style="padding-top: 40px;">
         <section class="section-container" style="text-align: center; padding-bottom: 20px;">
@@ -70,23 +70,8 @@
         </section>
     </main>
 
-    <?php include 'pie-pagina.php'; ?>
-    <script src="scripts/script.js"></script>
-    <script>
-        document.querySelectorAll('.accordion-header').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const icon = header.querySelector('.accordion-icon');
-                
-                if (content.style.maxHeight && content.style.maxHeight !== "0px") {
-                    content.style.maxHeight = "0px";
-                    icon.style.transform = "rotate(0deg)";
-                } else {
-                    content.style.maxHeight = content.scrollHeight + "px";
-                    icon.style.transform = "rotate(45deg)";
-                }
-            });
-        });
-    </script>
+    <?php include '../../pie-pagina.php'; ?>
+    <script src="../../home.js"></script>
+    <script src="temario.js" > </script>
 </body>
 </html>
