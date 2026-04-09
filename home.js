@@ -1,32 +1,84 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const header = document.querySelector('header');
-    if (header) {
-        const headerHeight = header.offsetHeight;
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > headerHeight) {
-                header.style.background = 'rgba(26, 26, 46, 0.9)';
-                header.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.25)';
-            } else {
-                header.style.background = 'rgba(26, 26, 46, 0.8)';
-                header.style.boxShadow = 'none';
-            }
+    const handleScroll = () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        const progressBar = document.getElementById("scroll-bar");
+        if(progressBar) progressBar.style.width = scrolled + "%";
+    };
+    window.addEventListener('scroll', handleScroll);
+
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const navMenu = document.getElementById('nav-menu');
+
+    if (mobileBtn && navMenu) {
+        mobileBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
         });
     }
 
-    const scrollProgress = document.getElementById('scroll-progress');
-    if (scrollProgress) {
-        window.addEventListener('scroll', () => {
-            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrolled = window.scrollY;
-            const progress = (scrolled / totalHeight) * 100;
-            scrollProgress.style.width = progress + '%';
+    const btnTheme = document.getElementById('theme-toggle');
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    const setTheme = (theme) => {
+        if (theme === 'dark') {
+            document.body.classList.add('dark-mode');
+            if(btnTheme) btnTheme.innerText = 'MODO CLARO';
+        } else {
+            document.body.classList.remove('dark-mode');
+            if(btnTheme) btnTheme.innerText = 'MODO OSCURO';
+        }
+        localStorage.setItem('theme', theme);
+    };
+    
+    setTheme(savedTheme);
+
+    if(btnTheme) {
+        btnTheme.addEventListener('click', () => {
+            const isDark = document.body.classList.contains('dark-mode');
+            setTheme(isDark ? 'light' : 'dark');
         });
     }
+
+    document.querySelectorAll('.scroll-to').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            if (targetId === "#") return;
+            if(targetId.startsWith("#")) {
+                e.preventDefault();
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const offset = 100;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - offset;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                    if(navMenu && navMenu.classList.contains('active')) navMenu.classList.remove('active');
+                }
+            }
+        });
+    });
+
+    const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+    
+    const elementsToAnimate = document.querySelectorAll('.anim-on-scroll'); 
+    elementsToAnimate.forEach((el, index) => {
+        if (el.classList.contains('course-card')) {
+            el.style.transitionDelay = `${index * 0.1}s`;
+        }
+        observer.observe(el);
+    });
 
     const canvas = document.getElementById('constellation-canvas');
     if (canvas && typeof THREE !== 'undefined' && typeof THREE.OrbitControls !== 'undefined') {
-
         const scene = new THREE.Scene();
         const container = canvas.parentElement;
         const width = container.clientWidth;
@@ -35,12 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         camera.position.set(1.2, 0.5, 1.8);
 
-        const renderer = new THREE.WebGLRenderer({
-            canvas: canvas,
-            alpha: true,
-            antialias: true
-        });
-        
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
         renderer.setSize(width, height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         
@@ -55,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const shaderUniforms = {
             uTime: { value: 0 },
-            uColor1: { value: new THREE.Color(0x00ffff) },
+            uColor1: { value: new THREE.Color(0x00ffff) }, 
             uColor2: { value: new THREE.Color(0x883997) }
         };
         
@@ -96,12 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const coreGeometry = new THREE.TorusKnotGeometry(0.6, 0.2, 200, 32);
         const coreMaterial = new THREE.ShaderMaterial({
-            uniforms: shaderUniforms,
-            vertexShader: vertexShader,
-            fragmentShader: fragmentShader,
-            transparent: true,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
+            uniforms: shaderUniforms, vertexShader: vertexShader, fragmentShader: fragmentShader,
+            transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
         });
 
         const dataCore = new THREE.Mesh(coreGeometry, coreMaterial);
@@ -129,16 +172,14 @@ document.addEventListener('DOMContentLoaded', () => {
             renderer.render(scene, camera);
         }
 
-        function handleResize() {
+        window.addEventListener('resize', () => {
             const newWidth = container.clientWidth;
             const newHeight = container.clientHeight;
             camera.aspect = newWidth / newHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(newWidth, newHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        }
+        });
 
-        window.addEventListener('resize', handleResize);
         animate();
     }
 
@@ -151,11 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             function activateGif(index) {
                 gifContainers.forEach((container, i) => {
-                    if (i === index) {
-                        container.classList.add('gif-active');
-                    } else {
-                        container.classList.remove('gif-active');
-                    }
+                    container.classList.toggle('gif-active', i === index);
                 });
             }
             
@@ -179,41 +216,5 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
-    const scrollLinks = document.querySelectorAll('.scroll-to-courses');
-    const targetElement = document.getElementById('cursos');
-    if (targetElement && scrollLinks.length > 0) {
-        scrollLinks.forEach(link => {
-            link.addEventListener('click', (event) => {
-                event.preventDefault();
-                targetElement.scrollIntoView({ behavior: 'smooth' });
-            });
-        });
-    }
-
-    const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-    
-    const elementsToAnimate = document.querySelectorAll('.anim-on-scroll, .section-title, .course-card, #hero-gif-carousel'); 
-    elementsToAnimate.forEach((el, index) => {
-        let delay = 0;
-         if (el.classList.contains('course-card')) {
-             const cardIndex = Array.from(elementsToAnimate).filter(e => e.classList.contains('course-card')).indexOf(el);
-             delay = 0.3 + cardIndex * 0.1;
-         } else if (el.id === 'hero-gif-carousel') {
-             delay = 0.5;
-         } else if (el.classList.contains('section-title')) {
-             delay = 0.1;
-         }
-         el.style.transitionDelay = `${delay}s`;
-        observer.observe(el);
-    });
 
 });
