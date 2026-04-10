@@ -1,8 +1,4 @@
-// --- SCRIPT ESPECÍFICO DE TEMARIO.HTML (DINÁMICO) ---
-
 document.addEventListener('DOMContentLoaded', () => {
-
-    // 1. Lógica del Acordeón
     const accordionHeaders = document.querySelectorAll('.accordion-header');
 
     if (accordionHeaders.length > 0) {
@@ -13,17 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Opcional: Abrir el primer acordeón por defecto
         if (accordionHeaders[0]) {
              accordionHeaders[0].parentElement.classList.add('active');
         }
     }
 
-    // 2. Animación de "Fade In" para los elementos del acordeón al cargar (similar al home)
     const observerOptions = {
-        root: null, // viewport
+        root: null,
         rootMargin: '0px',
-        threshold: 0.1 // El elemento es visible un 10%
+        threshold: 0.1
     };
 
     const observer = new IntersectionObserver((entries, observer) => {
@@ -35,11 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    // Selecciona todos los ítems del acordeón
     const accordionItemsToAnimate = document.querySelectorAll('.accordion-item');
     accordionItemsToAnimate.forEach((item, index) => {
-        item.classList.add('anim-on-scroll'); // Clase base de animación
-        item.style.transitionDelay = `${index * 0.1}s`; // Retraso secuencial
+        item.classList.add('anim-on-scroll');
+        item.style.transitionDelay = `${index * 0.1}s`;
         observer.observe(item);
     });
 

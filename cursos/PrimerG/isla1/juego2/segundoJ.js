@@ -1,13 +1,5 @@
-// =================================================================
-// ARCHIVO: cursos/PrimerG/isla1/juego2/segundoJ.js
-// JUEGO: Laberinto de Números - Suma del 1 al 5
-// =================================================================
-
-import { reportarJuegoCompletado, reportarIntentoFallido, reportarInicioDeJuego } from '../../../../librerias/logService.js';
-import { completarJuego } from '../../../../librerias/auth.firebase.js';
-
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("🚀 DOM cargado, inicializando juego de números...");
+    console.log("🚀 DOM cargado, inicializando juego de números (Sin Firebase)...");
     
     // --- REFERENCIAS AL DOM ---
     const robotEl = document.getElementById('robot');
@@ -355,8 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
             intentosRestantes--;
             updateTriesUI();
             
-            reportarIntentoFallido('PrimerG', 'isla1', 'juego2', intentosRestantes)
-                .catch(err => console.warn("Error reporting:", err));
+            // Ya no reportamos a Firebase cuando choca contra la pared
             
             if (intentosRestantes <= 0) {
                 setTimeout(showGameOverModal, 1000);
@@ -371,10 +362,35 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentSum === SUMA_OBJETIVO && collectedNumbers.length === 5) {
             logToMission("🎊 ¡VICTORIA! Completaste la suma 1+2+3+4+5=15", 'success');
             
-            completarJuego('PrimerG', 'isla1', 'juego2')
-                .then(() => reportarJuegoCompletado('PrimerG', 'isla1', 'juego2'))
-                .catch(error => console.error("Error:", error))
-                .finally(() => setTimeout(showVictoryModal, 1000));
+            // NUEVA LÓGICA: Enviar al guardar_progreso.php usando FormData (Sin Firebase)
+            const formData = new FormData();
+            formData.append('grado', 1);
+            formData.append('isla_id', 1);
+            formData.append('nombre_isla', 'Isla 1 - Secuenciación');
+            formData.append('juego_id', 2); // Este es el nivel 2
+            formData.append('nombre_juego', 'Laberinto de Números');
+            
+            // Calculamos cuántos intentos le tomó
+            const intentosUsados = (MAX_INTENTOS - intentosRestantes) + 1;
+            formData.append('intentos', intentosUsados);
+
+            // Ajusta los "../" dependiendo de cuántas carpetas debas salir para llegar a la raíz. 
+            // Si segundoJ.js está en "PrimerG/isla1/juego2/", necesitas "../../guardar_progreso.php". 
+            // Si está más profundo, agrega otro "../"
+            fetch('../../guardar_progreso.php', { 
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Respuesta de MySQL:", data);
+                setTimeout(showVictoryModal, 1000);
+            })
+            .catch(error => {
+                console.error("Error al guardar en MySQL:", error);
+                setTimeout(showVictoryModal, 1000); 
+            });
+
         } else if (currentSum !== SUMA_OBJETIVO && !isRunning) {
             intentosRestantes--;
             updateTriesUI();
@@ -393,9 +409,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (runButton) runButton.disabled = false;
     }
 
+    // --- RUTAS DE NAVEGACIÓN ---
     function goToMap() {
         if (confirm("¿Volver al mapa?")) {
-            window.location.href = '../../mapa1.html';
+            // Ajusta esta ruta igual que en tu cabecera de PHP
+            window.location.href = '/AppCurso/cursos/PrimerG/mapa1.php'; 
         }
     }
 
@@ -411,7 +429,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     if (backToTutorialBtn) backToTutorialBtn.addEventListener('click', showTutorial);
     if (backToMapBtn) backToMapBtn.addEventListener('click', goToMap);
-    if (nextLevelButton) nextLevelButton.addEventListener('click', () => window.location.href = '../../mapa1.html');
+    
+    // Al ganar y dar click en "Continuar", volvemos al mapa
+    if (nextLevelButton) nextLevelButton.addEventListener('click', () => window.location.href = '/AppCurso/cursos/PrimerG/mapa1.php');
     if (retryButton) retryButton.addEventListener('click', resetGame);
 
     // --- INICIALIZACIÓN ---
@@ -422,5 +442,5 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("📚 Tutorial mostrado");
     }
 
-    console.log("🎮 Juego de números listo!");
+    console.log("🎮 Juego de números listo y libre de Firebase!");
 });

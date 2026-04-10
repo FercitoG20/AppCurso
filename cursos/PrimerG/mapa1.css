@@ -1,4 +1,3 @@
-/* Quitar márgenes y ocultar scroll */
 body {
     margin: 0;
     overflow: hidden;
@@ -13,7 +12,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1; /* Asegurar que esté detrás */
+    z-index: 1;
 }
 
 
@@ -32,13 +31,13 @@ body {
     transition: opacity 0.3s ease, transform 0.3s ease;
     z-index: 100;
     min-width: 250px;
-    pointer-events: auto; /* <-- Asegúrate de que esto esté presente */
+    pointer-events: auto;
 }
 
 #level-popup.hidden {
     opacity: 0;
     transform: translate(-50%, -40%);
-    pointer-events: none; /* <-- Importante que SÍ esté en la clase hidden */
+    pointer-events: none;
 }
 
 #level-popup h2 { margin: 0 0 10px; color: #FFF; font-size: 24px; }
@@ -70,26 +69,22 @@ body {
 }
 #close-popup:hover { color: #00FFCC; }
 
-/* --- CSS SIMPLIFICADO para etiquetas (Nivel y Centro Isla) --- */
 .level-label, .island-center-label {
-    /* Quitamos position, transform, z-index - CSS2DRenderer lo maneja */
     color: #FFF;
     text-shadow: 0 0 5px #00FFCC;
     padding: 6px 12px;
     background-color: rgba(0, 0, 0, 0.7);
     border: 1px solid #00FFCC;
     border-radius: 5px;
-    pointer-events: none; /* Muy importante para no bloquear clics 3D */
+    pointer-events: none;
     white-space: nowrap;
     font-size: 16px;
     font-weight: bold;
     text-align: center;
     line-height: 1.2;
-    transition: opacity 0.4s ease-out; /* Transición suave de opacidad */
-    /* El transform para centrar se aplica por defecto en CSS2DObject */
+    transition: opacity 0.4s ease-out;
 }
 
-/* Etiqueta específica para el centro de la isla */
 .island-center-label {
     font-size: 18px;
     padding: 8px 15px;
@@ -98,6 +93,9 @@ body {
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
     background-color: rgba(0, 0, 0, 0.85);
 }
+
+
+
 .user-pill {
     background: rgba(255, 165, 0, 0.85);
     padding: 8px 18px;
@@ -124,12 +122,13 @@ body {
     z-index: 1000;
 }
 
-
-
 #home-button {
     position: static !important; 
     margin: 0 !important;
 }
+
+
+
 
 #main-title {
     position: absolute;

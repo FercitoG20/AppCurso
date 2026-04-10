@@ -1,11 +1,6 @@
-
-import { reportarJuegoCompletado, reportarIntentoFallido, reportarInicioDeJuego } from '../../../../librerias/logService.js';
-import { completarJuego } from '../../../../librerias/auth.firebase.js';
-
 document.addEventListener('DOMContentLoaded', () => {
     console.log("🚀 DOM cargado, inicializando juego de colores...");
     
-    // --- REFERENCIAS AL DOM ---
     const robotEl = document.getElementById('robot');
     const gridEl = document.getElementById('grid-world');
     const codeInput = document.getElementById('code-input');
@@ -32,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToTutorialBtn = document.getElementById('back-to-tutorial');
     const backToMapBtn = document.getElementById('back-to-map');
 
-    // --- CONFIGURACIÓN ---
     const MAX_INTENTOS = 5;
     const FORMAS_OBJETIVO = ['🔵', '🟢', '🔴', '🟡', '🟣'];
     const NOMBRES_FORMAS = ['AZUL', 'VERDE', 'ROJO', 'AMARILLO', 'MORADO'];
@@ -59,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
         hint: `// Ejemplo de código:\nmove();\nmove();\nrecoger();\nrotate();\nmove();\nrecoger();\n// ¡Recolecta los colores en orden!`
     };
 
-    // --- VARIABLES DEL JUEGO ---
     let robotState = {};
     let isRunning = false;
     let intentosRestantes = MAX_INTENTOS;
@@ -68,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let collectedShapes = [];
     let nextShapeIndex = 0;
 
-    // --- FUNCIONES DEL JUEGO ---
     function logToMission(message, type = 'info') {
         if (!missionLogEl) return;
         const entry = document.createElement('div');
@@ -77,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
         missionLogEl.appendChild(entry);
         missionLogEl.scrollTop = missionLogEl.scrollHeight;
         
-        // Limitar a 100 entradas
         while (missionLogEl.children.length > 100) {
             missionLogEl.removeChild(missionLogEl.firstChild);
         }
@@ -236,9 +227,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tutorialModal) tutorialModal.classList.add('hidden');
         if (gameContainer) gameContainer.classList.remove('hidden');
         resetGame();
-        
-        reportarInicioDeJuego('PrimerG', 'isla1', 'juego3')
-            .catch(err => console.warn("Error reporting:", err));
     }
 
     function addCommandToTextarea(command) {
@@ -371,9 +359,6 @@ document.addEventListener('DOMContentLoaded', () => {
             intentosRestantes--;
             updateTriesUI();
             
-            reportarIntentoFallido('PrimerG', 'isla1', 'juego3', intentosRestantes)
-                .catch(err => console.warn("Error reporting:", err));
-            
             if (intentosRestantes <= 0) {
                 setTimeout(showGameOverModal, 1000);
             }
@@ -386,11 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkWinCondition() {
         if (collectedShapes.length === 5) {
             logToMission("🎊 ¡VICTORIA! Completaste el patrón de colores", 'success');
-            
-            completarJuego('PrimerG', 'isla1', 'juego3')
-                .then(() => reportarJuegoCompletado('PrimerG', 'isla1', 'juego3'))
-                .catch(error => console.error("Error:", error))
-                .finally(() => setTimeout(showVictoryModal, 1000));
+            setTimeout(showVictoryModal, 1000);
         } else if (!isRunning && collectedShapes.length < 5) {
             intentosRestantes--;
             updateTriesUI();
@@ -412,11 +393,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function goToMap() {
         if (confirm("¿Volver al mapa?")) {
-            window.location.href = '../../mapa1.html';
+            window.location.href = '../../mapa1.php';
         }
     }
 
-    // --- EVENT LISTENERS ---
     if (startButton) startButton.addEventListener('click', startGame);
     if (btnMove) btnMove.addEventListener('click', () => addCommandToTextarea('move();'));
     if (btnRotate) btnRotate.addEventListener('click', () => addCommandToTextarea('rotate();'));
@@ -429,10 +409,52 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     if (backToTutorialBtn) backToTutorialBtn.addEventListener('click', showTutorial);
     if (backToMapBtn) backToMapBtn.addEventListener('click', goToMap);
-    if (nextLevelButton) nextLevelButton.addEventListener('click', () => window.location.href = '../../mapa1.html');
+    
+    // --- INTEGRACIÓN PHP: GUARDAR PROGRESO AL GANAR ---
+    if (nextLevelButton) {
+        nextLevelButton.addEventListener('click', () => {
+            nextLevelButton.innerText = "Guardando progreso... ⏳";
+            nextLevelButton.disabled = true;
+
+            // Calculamos cuántos intentos le tomó ganar
+            const intentosUsados = (MAX_INTENTOS - intentosRestantes) + 1;
+
+            // Preparamos los datos EXACTOS que tu nueva base de datos está pidiendo
+            let datos = new FormData();
+            datos.append('grado', 1); // Mapa 1
+            datos.append('isla_id', 1); // ID de la Isla
+            datos.append('nombre_isla', 'Isla 1 - Secuenciación'); // Cambia este nombre si tu isla se llama diferente
+            datos.append('juego_id', 1); // ID de este juego
+            datos.append('nombre_juego', 'El Tesoro de los Colores'); // El nombre de este juego
+            datos.append('intentos', intentosUsados);
+
+            fetch('../../guardar_progreso.php', {
+                method: 'POST',
+                body: datos
+            })
+            .then(respuesta => respuesta.json()) // Esperamos un JSON limpio
+            .then(data => {
+                console.log("Respuesta de la BD:", data);
+                
+                if(data.status === 'success' || data.message.includes('completado antes')) {
+                    // Si todo salió bien, lo mandamos al mapa
+                    window.location.href = '../../mapa1.php'; 
+                } else {
+                    // Si hay un error, lo mostramos en consola pero igual lo dejamos salir
+                    console.error("Error al guardar:", data.message);
+                    window.location.href = '../../mapa1.php';
+                }
+            })
+            .catch(error => {
+                console.error("Error crítico de JS/Red:", error);
+                // Si falla su internet en ese instante, igual lo mandamos al mapa por seguridad
+                window.location.href = '../../mapa1.php';
+            });
+        });
+    }
+
     if (retryButton) retryButton.addEventListener('click', resetGame);
 
-    // --- INICIALIZACIÓN ---
     setupLevel();
     
     if (tutorialModal) {

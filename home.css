@@ -248,6 +248,10 @@ body:not(.dark-mode) h1.outline { color: rgba(2, 132, 199, 0.05); }
     margin-top: auto; 
 }
 
+.centrar-proximamente {
+    align-self: flex-start;
+}
+
 .btn-info:hover { 
     background: var(--accent); 
     color: var(--btn-primary-text); 

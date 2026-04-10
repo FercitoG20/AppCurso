@@ -1,3 +1,34 @@
+<?php
+session_start();
+
+// 1. Verificamos que el usuario haya iniciado sesión
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../../../../Navegaciones/login/login.php");
+    exit();
+}
+
+// 2. Conectamos a la BD para saber su progreso REAL
+include '../../../../conexion.php'; 
+
+$id_user = $_SESSION['usuario_id'];
+$nivel_de_este_juego = 2; 
+
+// 3. Buscamos cuál es el nivel máximo que ha completado en el grado 1
+$query = "SELECT MAX(juego_id) as max_nivel FROM progreso_usuario WHERE usuario_id = '$id_user' AND grado = 1";
+$res = mysqli_query($conexion, $query);
+$row = mysqli_fetch_assoc($res);
+
+// Si no ha jugado nada, su max_nivel es 0. 
+// El nivel permitido siempre es el nivel máximo que pasó + 1.
+$max_nivel_completado = $row['max_nivel'] ? (int)$row['max_nivel'] : 0;
+$nivel_permitido = $max_nivel_completado + 1;
+
+// 4. Comparamos: Si el nivel permitido es menor al nivel de este juego, lo bloqueamos
+if ($nivel_permitido < $nivel_de_este_juego) {
+    header("Location: ../../../../mapa1.php?mensaje=nivel_bloqueado");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,7 +38,6 @@
     <link rel="stylesheet" href="segundoJ.css">
 </head>
 <body>
-    <!-- Modales -->
     <div id="victory-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <h1>🎉 ¡FELICIDADES! 🎉</h1>
@@ -25,7 +55,6 @@
         </div>
     </div>
 
-    <!-- Tutorial Inicial -->
     <div id="tutorial-modal" class="modal-overlay">
         <div class="modal-content tutorial">
             <h1>👋 ¡BIENVENIDO A NÚMEROS! 👋</h1>
@@ -51,15 +80,12 @@
         </div>
     </div>
 
-    <!-- Contenedor Principal -->
     <div id="game-container" class="hidden">
-        <!-- Panel Izquierdo: Mundo del Juego -->
         <div class="game-world">
             <div id="grid-world">
                 <div id="robot">🤖</div>
             </div>
             
-            <!-- Información en Tiempo Real -->
             <div class="live-info">
                 <div class="info-card">
                     <h3>POSICIÓN</h3>
@@ -76,13 +102,11 @@
             </div>
         </div>
 
-        <!-- Panel Derecho: Controles -->
         <div class="control-panel">
-            <!-- Header -->
             <div class="panel-header">
                 <h1>🖥️ MI PRIMER PROGRAMA MATEMÁTICO</h1>
                 <div class="level-info">
-                    <span id="level-title">Nivel 1: Suma del 1 al 5</span>
+                    <span id="level-title">Nivel 2: Suma del 1 al 5</span>
                     <div id="tries-counter">
                         <span>💖 Intentos:</span>
                         <span id="tries-count">5/5</span>
@@ -90,7 +114,6 @@
                 </div>
             </div>
 
-            <!-- Output -->
             <div id="output-display">
                 <div class="output-header">
                     <span>📟 SUMA TOTAL:</span>
@@ -99,7 +122,6 @@
                 <div id="program-output">0</div>
             </div>
 
-            <!-- Bitácora -->
             <div id="mission-log-container">
                 <div class="log-header">
                     <span>📋 BITÁCORA</span>
@@ -108,7 +130,6 @@
                 <div id="mission-log"></div>
             </div>
 
-            <!-- Editor -->
             <div class="code-editor">
                 <div class="editor-header">
                     <span>📝 EDITOR</span>
@@ -117,7 +138,6 @@
                 <textarea id="code-input" placeholder="// Escribe tu código aquí...&#10;// Ejemplo:&#10;move();&#10;move();&#10;sumar();&#10;// ¡Encuentra los números 1,2,3,4,5!"></textarea>
             </div>
 
-            <!-- Botones -->
             <div class="action-buttons">
                 <div class="command-buttons">
                     <button id="btn-move" class="cmd-btn">🚀 move()</button>

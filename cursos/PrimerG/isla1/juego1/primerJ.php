@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../../../../Navegaciones/login/login.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,7 +14,7 @@
     <link rel="stylesheet" href="primerJ.css">
 </head>
 <body>
-    <!-- Modales -->
+
     <div id="victory-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <h1>🎉 ¡FELICIDADES! 🎉</h1>
@@ -25,7 +32,6 @@
         </div>
     </div>
 
-    <!-- Tutorial Inicial -->
     <div id="tutorial-modal" class="modal-overlay">
         <div class="modal-content tutorial">
             <h1>👋 ¡BIENVENIDO A LOS COLORES! 👋</h1>
@@ -50,15 +56,12 @@
         </div>
     </div>
 
-    <!-- Contenedor Principal -->
     <div id="game-container" class="hidden">
-        <!-- Panel Izquierdo: Mundo del Juego -->
         <div class="game-world">
             <div id="grid-world">
                 <div id="robot">🤖</div>
             </div>
             
-            <!-- Información en Tiempo Real -->
             <div class="live-info">
                 <div class="info-card">
                     <h3>POSICIÓN</h3>
@@ -74,7 +77,6 @@
                 </div>
             </div>
             
-            <!-- Patrón Requerido -->
             <div class="pattern-container">
                 <h3>📐 PATRÓN REQUERIDO</h3>
                 <div class="pattern-display">
@@ -91,9 +93,7 @@
             </div>
         </div>
 
-        <!-- Panel Derecho: Controles -->
         <div class="control-panel">
-            <!-- Header -->
             <div class="panel-header">
                 <h1>🖥️ MI PRIMER PROGRAMA - COLORES</h1>
                 <div class="level-info">
@@ -105,7 +105,6 @@
                 </div>
             </div>
 
-            <!-- Output -->
             <div id="output-display">
                 <div class="output-header">
                     <span>📟 COLECCIÓN:</span>
@@ -114,7 +113,6 @@
                 <div id="program-output">_ _ _ _ _</div>
             </div>
 
-            <!-- Bitácora -->
             <div id="mission-log-container">
                 <div class="log-header">
                     <span>📋 BITÁCORA</span>
@@ -123,7 +121,6 @@
                 <div id="mission-log"></div>
             </div>
 
-            <!-- Editor -->
             <div class="code-editor">
                 <div class="editor-header">
                     <span>📝 EDITOR</span>
@@ -132,7 +129,6 @@
                 <textarea id="code-input" placeholder="// Escribe tu código aquí...&#10;// Ejemplo:&#10;move();&#10;move();&#10;recoger();&#10;// ¡Encuentra los colores en orden!"></textarea>
             </div>
 
-            <!-- Botones -->
             <div class="action-buttons">
                 <div class="command-buttons">
                     <button id="btn-move" class="cmd-btn">🚀 move()</button>

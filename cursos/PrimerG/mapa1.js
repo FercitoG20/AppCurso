@@ -1,25 +1,21 @@
-// --- 0. Esperar a que la página cargue por completo ---
 window.addEventListener('load', init);
 
-// --- 1. Variables Globales ---
 let scene, camera, renderer, controls;
-let css2dRenderer; // Para las etiquetas HTML
+let css2dRenderer;
 let raycaster, mouse;
-const levelMarkers = []; // Grupos de plataformas de nivel
+const levelMarkers = [];
 let particleSystem;
 const backgroundShapes = [];
-const islandCenterObjects = []; // Objetos 3D centrales
-let initialCameraPos = new THREE.Vector3(); // Vista inicial
-let initialControlsTarget = new THREE.Vector3(); // Target inicial
+const islandCenterObjects = [];
+let initialCameraPos = new THREE.Vector3();
+let initialControlsTarget = new THREE.Vector3();
 
-// Referencias a la UI
 const popupEl = document.getElementById('level-popup');
 const levelTitleEl = document.getElementById('level-title');
 const levelTopicEl = document.getElementById('level-topic');
 const playButtonEl = document.getElementById('play-button');
 const closeButtonEl = document.getElementById('close-popup');
 
-// --- 2. DATOS DE LAS 10 ISLAS (CATEGORÍAS) ---
 const islandCategories = [
     { id: 1, title: "Secuenciación", short: "SEC", topic: "Juego de Sonda", color: 0x00FFCC, theme: "data_spire", centerObjectTheme: "tower" },
     { id: 2, title: "Variables", short: "VAR", topic: "Juego de Núcleo", color: 0x00AACC, theme: "memory_bank", centerObjectTheme: "core_crystal" },
@@ -33,25 +29,19 @@ const islandCategories = [
     { id: 10, title: "Clases (OOP)", short: "OOP", topic: "Fábrica Drones", color: 0xAAAAFF, theme: "mainframe", centerObjectTheme: "robot_factory" }
 ];
 
-// ==========================================================
-// ¡ARRAY CORREGIDO CON LOS NOMBRES DE ARCHIVO CORRECTOS!
-// ==========================================================
 const gameFileNames = [
-    "primerJ.html",
-    "segundoJ.html",
-    "tercerJ.html",
-    "cuartoJ.html",
-    "quintoJ.html",
-    "sextoJ.html",
-    "septimoJ.html",
-    "octavoJ.html",
-    "novenoJ.html",
-    "decimoJ.html"
+    "primerJ.php",
+    "segundoJ.php",
+    "tercerJ.php",
+    "cuartoJ.php",
+    "quintoJ.php",
+    "sextoJ.php",
+    "septimoJ.php",
+    "octavoJ.php",
+    "novenoJ.php",
+    "decimoJ.php"
 ];
-// ==========================================================
 
-
-// --- 3. Función de Inicialización ---
 function init() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x000010);
@@ -59,9 +49,8 @@ function init() {
 
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.set(0, 60, 80);
-    initialCameraPos.copy(camera.position); // Guardar pos inicial
+    initialCameraPos.copy(camera.position);
 
-    // --- Renderizador WebGL ---
     renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('#map-canvas'), antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
@@ -70,7 +59,6 @@ function init() {
     renderer.domElement.style.left = 0;
     renderer.domElement.style.zIndex = 1;
 
-    // --- Renderizador CSS2D ---
     css2dRenderer = new THREE.CSS2DRenderer();
     css2dRenderer.setSize(window.innerWidth, window.innerHeight);
     css2dRenderer.domElement.style.position = 'absolute';
@@ -80,17 +68,15 @@ function init() {
     css2dRenderer.domElement.style.pointerEvents = 'none';
     document.body.appendChild(css2dRenderer.domElement);
 
-    // --- Controles ---
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.1; // Más suave
-    controls.rotateSpeed = 0.5; // Rotación más lenta
+    controls.dampingFactor = 0.1;
+    controls.rotateSpeed = 0.5;
     controls.maxPolarAngle = Math.PI / 1.8;
     controls.minPolarAngle = Math.PI / 6;
     controls.target.set(0, 0, 0);
-    initialControlsTarget.copy(controls.target); // Guardar target inicial
+    initialControlsTarget.copy(controls.target);
 
-    // --- Luces ---
     const ambientLight = new THREE.AmbientLight(0xAAAAFF, 0.5); scene.add(ambientLight);
     const dirLight = new THREE.DirectionalLight(0x00FFCC, 0.8);
     dirLight.position.set(20, 30, 20); dirLight.castShadow = true;
@@ -100,11 +86,9 @@ function init() {
     scene.add(dirLight);
     const hemisphereLight = new THREE.HemisphereLight(0x00aaff, 0xff00aa, 0.5); scene.add(hemisphereLight);
 
-    // --- Mundo ---
     const grid = new THREE.GridHelper(300, 100, 0x00ffff, 0x00ffff);
     grid.material.opacity = 0.15; grid.material.transparent = true; grid.position.y = -10; scene.add(grid);
 
-    // --- Partículas ---
     const particleCount = 5000; const particles = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3); const colors = new Float32Array(particleCount * 3);
     const baseColor = new THREE.Color(0x00ffff);
@@ -119,7 +103,6 @@ function init() {
     const particleMaterial = new THREE.PointsMaterial({ size: 0.5, vertexColors: true, blending: THREE.AdditiveBlending, transparent: true, opacity: 0.8, depthWrite: false });
     particleSystem = new THREE.Points(particles, particleMaterial); scene.add(particleSystem);
 
-    // --- Formas de Fondo ---
     const bgGeom = new THREE.IcosahedronGeometry(15, 0); const bgMat = new THREE.MeshBasicMaterial({ color: 0x0055aa, wireframe: true, transparent: true, opacity: 0.3 });
     for (let i = 0; i < 5; i++) {
         const shape = new THREE.Mesh(bgGeom, bgMat);
@@ -128,80 +111,81 @@ function init() {
         scene.add(shape); backgroundShapes.push(shape);
     }
 
-    // --- 4. Crear las PLATAFORMAS y ETIQUETAS ---
     loadLevelMarkers();
 
-    // --- 5. Configurar Interacción ---
     raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();
-    window.addEventListener('click', onMouseClick); // Usar pointerdown
+    window.addEventListener('click', onMouseClick);
 
-    // --- 6. Configurar Botones UI ---
     closeButtonEl.addEventListener('click', hidePopup);
     const homeButton = document.getElementById('home-button');
-    homeButton.addEventListener('click', () => { window.location.href = '../../home.php'; });
+    if(homeButton) homeButton.addEventListener('click', () => { window.location.href = '../../home.php'; });
     const resetViewButton = document.getElementById('reset-view-button');
-    resetViewButton.addEventListener('click', resetCameraView);
+    if(resetViewButton) resetViewButton.addEventListener('click', resetCameraView);
 
-    // --- 7. Iniciar Bucle de Animación ---
     animate();
 
-    // --- 8. Manejar redimensionamiento ---
     window.addEventListener('resize', onWindowResize);
 }
 
-// --- LÓGICA DE CARGA 10x10 (ACTUALIZADA PARA CSS2DObject) ---
 function loadLevelMarkers() {
     const TOTAL_CATEGORIES = islandCategories.length;
     const MAIN_RADIUS = 40;
     const SUB_RADIUS = 10;
     const LEVELS_PER_ISLAND = 10;
+    const nivelesDesbloqueados = window.PROGRESO_USUARIO || [1];
+    const maxNivelDesbloqueado = Math.max(...nivelesDesbloqueados);
 
     islandCategories.forEach((category, i) => {
         const mainAngle = (i / TOTAL_CATEGORIES) * Math.PI * 2;
         const mainX = MAIN_RADIUS * Math.cos(mainAngle);
         const mainZ = MAIN_RADIUS * Math.sin(mainAngle);
         const mainY = (i % 2) * 3;
-
-        // --- Crear el objeto central de la isla ---
+        
         const centerObject = createIslandCenterObject(category.centerObjectTheme, category.color);
         centerObject.position.set(mainX, mainY + 0.5, mainZ);
         centerObject.userData = { isIslandCenter: true, islandIndex: i, islandData: category, islandCenterPos: new THREE.Vector3(mainX, mainY, mainZ) };
         scene.add(centerObject);
         islandCenterObjects.push(centerObject);
 
-        // --- Etiqueta para el centro de la isla (CSS2D) ---
+        const primerNivelIsla = i * LEVELS_PER_ISLAND + 1;
+        const islaDesbloqueada = primerNivelIsla <= maxNivelDesbloqueado;
+
         const centerLabelDiv = document.createElement('div');
         centerLabelDiv.className = 'island-center-label';
         centerLabelDiv.style.backgroundColor = `rgba(${new THREE.Color(category.color).r*200}, ${new THREE.Color(category.color).g*200}, ${new THREE.Color(category.color).b*200}, 0.3)`;
         centerLabelDiv.style.border = `2px solid ${new THREE.Color(category.color).getStyle()}`;
-        centerLabelDiv.innerHTML = `Isla ${i + 1}:<br>${category.title}`;
+        
+        centerLabelDiv.innerHTML = `Isla ${i + 1}:<br>${category.title} ${islaDesbloqueada ? '' : '🔒'}`;
         const centerLabel = new THREE.CSS2DObject(centerLabelDiv);
-        centerLabel.position.set(0, 5, 0); // Posición relativa
+        centerLabel.position.set(0, 5, 0);
         centerObject.add(centerLabel);
 
         for (let j = 0; j < LEVELS_PER_ISLAND; j++) {
             const levelNum = i * LEVELS_PER_ISLAND + j + 1;
+            
+            const isUnlocked = levelNum <= maxNivelDesbloqueado;
+
             const isMainPlatform = (j === 0);
             const subAngle = (j / LEVELS_PER_ISLAND) * Math.PI * 2;
             const x = mainX + SUB_RADIUS * Math.cos(subAngle);
             const z = mainZ + SUB_RADIUS * Math.sin(subAngle);
             const y = mainY;
-
-            // --- Creación de Plataforma y Objeto ---
             const platformRadius = isMainPlatform ? 3 : 2;
             const platformGeom = new THREE.CylinderGeometry(platformRadius, platformRadius + 0.2, 0.5, 6);
+            const matColor = isUnlocked ? category.color : 0x444444; 
             const platformMat = new THREE.MeshPhongMaterial({ color: 0x222244, shininess: 50, flatShading: true });
             const topGeom = new THREE.CylinderGeometry(platformRadius * 0.9, platformRadius * 0.9, 0.2, 6);
-            const topMat = new THREE.MeshBasicMaterial({ color: category.color });
+            const topMat = new THREE.MeshBasicMaterial({ color: matColor });
             const top = new THREE.Mesh(topGeom, topMat); top.position.y = 0.35;
             const platform = new THREE.Mesh(platformGeom, platformMat); platform.receiveShadow = true; platform.castShadow = true; platform.position.y = 0;
+            
             let themeObject;
             if (isMainPlatform) {
-                themeObject = createThemeObject(category.theme, category.color);
+                themeObject = createThemeObject(category.theme, matColor);
                 themeObject.scale.set(1.2, 1.2, 1.2);
             } else {
-                themeObject = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), new THREE.MeshBasicMaterial({ color: category.color }));
+                themeObject = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), new THREE.MeshBasicMaterial({ color: matColor }));
             }
             themeObject.position.y = 0.5;
 
@@ -210,30 +194,16 @@ function loadLevelMarkers() {
             levelGroup.position.set(x, y, z);
             levelGroup.lookAt(mainX, y, mainZ);
 
-            // ==========================================================
-            // --- ¡AQUÍ ESTÁ LA CORRECCIÓN! ---
-            // ==========================================================
-            // 'i' es el índice de la isla (0-9). 'category.id' es el ID de la isla (1-10).
-            // 'j' es el índice del nivel DENTRO de la isla (0-9).
-            
-            const islandFolderName = `isla${category.id}`; // p.ej., "isla1", "isla2"
-            const gameFolderName = `juego${j + 1}`;       // p.ej., "juego1", "juego2", ... "juego10"
-            
-            // Usamos 'j' (el índice del nivel) para seleccionar el nombre del archivo
-            const gameFileName = gameFileNames[j];       // p.ej., "primerJ.html", "segundoJ.html" ...
-            
-            // Según tu estructura de carpetas (isla1/juego1/primerJ.html)
-            // Asumimos que mapa1.html está en la carpeta 'PrimerG'
+            const islandFolderName = `isla${category.id}`;
+            const gameFolderName = `juego${j + 1}`;
+            const gameFileName = gameFileNames[j];
             const gamePath = `${islandFolderName}/${gameFolderName}/${gameFileName}`;
-            // ==========================================================
-            // --- FIN DE LA CORRECCIÓN ---
-            // ==========================================================
 
             levelGroup.userData = {
                 level: levelNum, title: `${category.title} - Nivel ${j + 1}`,
                 topic: category.topic, 
-                path: gamePath, // <-- Aquí se usa la ruta corregida
-                locked: false,
+                path: gamePath,
+                locked: !isUnlocked, 
                 baseY: y, mainX: mainX, mainZ: mainZ,
                 islandIndex: i,
                 islandCenterPos: new THREE.Vector3(mainX, mainY, mainZ)
@@ -242,62 +212,60 @@ function loadLevelMarkers() {
             scene.add(levelGroup);
             levelMarkers.push(levelGroup);
 
-            // --- Etiqueta de nivel (CSS2D) ---
             const labelDiv = document.createElement('div');
             labelDiv.className = 'level-label';
-            labelDiv.style.backgroundColor = `rgba(${new THREE.Color(category.color).r*200}, ${new THREE.Color(category.color).g*200}, ${new THREE.Color(category.color).b*200}, 0.2)`;
-            labelDiv.style.border = `1px solid ${new THREE.Color(category.color).getStyle()}`;
-            labelDiv.innerHTML = `${category.short} - ${j + 1}`;
-            labelDiv.style.opacity = 0; // Oculta inicialmente
+            
+            if(isUnlocked){
+                labelDiv.style.backgroundColor = `rgba(${new THREE.Color(category.color).r*200}, ${new THREE.Color(category.color).g*200}, ${new THREE.Color(category.color).b*200}, 0.2)`;
+                labelDiv.style.border = `1px solid ${new THREE.Color(category.color).getStyle()}`;
+            } else {
+                labelDiv.style.backgroundColor = `rgba(100, 100, 100, 0.2)`;
+                labelDiv.style.border = `1px solid #666`;
+            }
+            
+            labelDiv.innerHTML = `${category.short} - ${j + 1} ${isUnlocked ? '' : '🔒'}`;
+            labelDiv.style.opacity = 0;
 
             const levelLabel = new THREE.CSS2DObject(labelDiv);
             levelLabel.position.set(0, isMainPlatform ? 3.5 : 2.5, 0);
-            levelLabel.userData = { islandIndex: i }; // Guardar a qué isla pertenece
-            levelGroup.add(levelLabel); // Añadir etiqueta al grupo
+            levelLabel.userData = { islandIndex: i };
+            levelGroup.add(levelLabel);
         }
     });
 }
 
-// --- Bucle de Animación (ACTUALIZADO PARA VISIBILIDAD DE ETIQUETAS) ---
 let clock = new THREE.Clock();
-const ISLAND_VISIBILITY_THRESHOLD = 35; // Distancia para mostrar etiquetas de nivel
+const ISLAND_VISIBILITY_THRESHOLD = 35;
 
 function animate() {
     requestAnimationFrame(animate);
     const elapsedTime = clock.getElapsedTime();
     const delta = clock.getDelta();
 
-    // --- Animación de Niveles ---
     levelMarkers.forEach((levelGroup, index) => {
-        levelGroup.children[2].rotation.y = elapsedTime * 0.5; // Objeto temático
+        levelGroup.children[2].rotation.y = elapsedTime * 0.5;
         const floatSpeed = 0.4;
         const floatHeight = 0.2;
         levelGroup.position.y = levelGroup.userData.baseY + (Math.sin(elapsedTime * floatSpeed + index) * floatHeight);
     });
 
-    // --- Animación de los objetos centrales ---
     islandCenterObjects.forEach((obj, index) => {
         obj.rotation.y = elapsedTime * 0.2;
         const floatSpeed = 0.3;
         const floatHeight = 0.5;
         obj.position.y = (islandCategories[index].id % 2) * 3 + (Math.sin(elapsedTime * floatSpeed + index * 5) * floatHeight);
-        // La etiqueta CSS2D se mueve con él
     });
 
-    // --- Lógica de Visibilidad de Etiquetas de Nivel ---
     const cameraPos = camera.position;
     levelMarkers.forEach(levelGroup => {
-        // La etiqueta es el 4to hijo ahora (plataforma, top, objeto, etiqueta)
         const labelObject = levelGroup.children[3];
         if (labelObject && labelObject.isCSS2DObject) {
             const islandCenterPos = levelGroup.userData.islandCenterPos;
             const distanceToIslandCenter = cameraPos.distanceTo(islandCenterPos);
-            // Mostrar etiqueta si está cerca de su isla
             labelObject.element.style.opacity = distanceToIslandCenter < ISLAND_VISIBILITY_THRESHOLD ? '1' : '0';
         }
     });
 
-    // --- Animación de Fondo ---
     if (particleSystem) { particleSystem.rotation.y = elapsedTime * 0.05; }
     backgroundShapes.forEach((shape, i) => {
         shape.rotation.x += delta * 0.1 * (i % 2 === 0 ? 1 : -1);
@@ -308,10 +276,9 @@ function animate() {
     TWEEN.update();
 
     renderer.render(scene, camera);
-    css2dRenderer.render(scene, camera); // Renderizar etiquetas
+    css2dRenderer.render(scene, camera);
 }
 
-// --- Lógica de Interacción (ACTUALIZADA PARA CENTROS DE ISLA) ---
 function onMouseClick(event) {
     if (!popupEl.classList.contains('hidden')) {
         hidePopup(); return;
@@ -320,21 +287,18 @@ function onMouseClick(event) {
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
 
-    // Priorizar clics en objetos centrales
     const centerIntersects = raycaster.intersectObjects(islandCenterObjects, true);
     if (centerIntersects.length > 0) {
         let clickedCenter = centerIntersects[0].object;
-         // Buscar el objeto PADRE que tiene userData.isIslandCenter
         while (clickedCenter.parent && !clickedCenter.userData.isIslandCenter) {
              clickedCenter = clickedCenter.parent;
         }
         if (clickedCenter.userData.isIslandCenter) {
              flyToIslandView(clickedCenter);
-             return; // No hacer nada más si se hizo clic en un centro
+             return;
         }
     }
 
-    // Si no se hizo clic en un centro, buscar clics en plataformas de nivel
     const levelIntersects = raycaster.intersectObjects(levelMarkers, true);
     if (levelIntersects.length > 0) {
         let clickedLevel = levelIntersects[0].object;
@@ -348,8 +312,6 @@ function onMouseClick(event) {
     }
 }
 
-
-// --- Animaciones con TWEEN ---
 function flyToLevel(levelGroup) {
     const levelPos = levelGroup.position;
     const data = levelGroup.userData;
@@ -371,18 +333,16 @@ function flyToLevel(levelGroup) {
 
 function flyToIslandView(islandCenterObject) {
     const centerPos = islandCenterObject.userData.islandCenterPos;
-    const mainRadius = 40; // Radio principal
-    const subRadius = 10;  // Radio del anillo de niveles
+    const mainRadius = 40;
+    const subRadius = 10;
     new TWEEN.Tween(controls.target)
         .to({ x: centerPos.x, y: centerPos.y + 2, z: centerPos.z }, 1200)
         .easing(TWEEN.Easing.Quadratic.InOut).start();
-    // Calcular una posición "exterior" para ver toda la isla
-    const direction = centerPos.clone().normalize(); // Vector del origen al centro de la isla
-    // Alejarse lo suficiente para ver el anillo de niveles (subRadius) + un margen
+    const direction = centerPos.clone().normalize();
     const cameraDistance = mainRadius + subRadius + 15;
     const cameraX = direction.x * cameraDistance;
     const cameraZ = direction.z * cameraDistance;
-    const cameraY = centerPos.y + 15; // Vista elevada
+    const cameraY = centerPos.y + 15;
     new TWEEN.Tween(camera.position)
         .to({ x: cameraX, y: cameraY, z: cameraZ }, 1200)
         .easing(TWEEN.Easing.Quadratic.InOut).start();
@@ -397,54 +357,49 @@ function resetCameraView() {
         .easing(TWEEN.Easing.Quadratic.InOut).start();
 }
 
-
-// --- Lógica de Popup ---
-// --- Lógica de Popup ---
-// --- Lógica de Popup ---
 function showPopup(data) {
-    // *** DEBUG: Asegurarnos de que los elementos existen ANTES de usarlos ***
     if (!popupEl || !levelTitleEl || !levelTopicEl || !playButtonEl) {
-        console.error("Mapa JS Error CRÍTICO: Elementos de la popup no encontrados en showPopup.");
-        return; // Detener si falta algo esencial
+        console.error("Mapa JS Error CRÍTICO: Elementos de la popup no encontrados.");
+        return;
     }
-    console.log("Mapa JS: showPopup() llamado con datos:", data);
 
-    // Actualizar texto de la popup
     levelTitleEl.innerText = data.title;
     levelTopicEl.innerText = data.topic;
 
-    // === ¡LA LÍNEA CLAVE! ===
-    // Asignar la función de redirección al evento onclick del botón
-    playButtonEl.onclick = () => {
-        // *** DEBUG: Mensaje JUSTO ANTES de redirigir ***
-        console.log("Mapa JS: Botón 'Jugar' presionado. Redirigiendo a:", data.path);
-        
-        // Verificar que data.path tenga un valor
-        if (data.path) {
-            window.location.href = data.path;
-        } else {
-            console.error("Mapa JS Error: data.path está vacío o indefinido. No se puede redirigir.");
-        }
-    };
-    // ========================
+    if (data.locked) {
+        playButtonEl.innerText = "Nivel Bloqueado 🔒";
+        playButtonEl.style.backgroundColor = "#333"; 
+        playButtonEl.style.color = "#888";
+        playButtonEl.style.borderColor = "#555";
+        playButtonEl.style.boxShadow = "none";
+        playButtonEl.style.cursor = "not-allowed";
+        playButtonEl.onclick = null; 
+    } else {
+        playButtonEl.innerText = "¡Jugar! ▶";
+        playButtonEl.style.backgroundColor = ""; 
+        playButtonEl.style.color = "";
+        playButtonEl.style.borderColor = "";
+        playButtonEl.style.boxShadow = "";
+        playButtonEl.style.cursor = "pointer";
+        playButtonEl.onclick = () => {
+            if (data.path) {
+                window.location.href = data.path;
+            }
+        };
+    }
 
-    // Mostrar la popup
     popupEl.classList.remove('hidden');
-    console.log("Mapa JS: Popup mostrada.");
 }
+
 function hidePopup() { popupEl.classList.add('hidden'); }
 
-// --- Redimensionamiento ---
 function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    css2dRenderer.setSize(window.innerWidth, window.innerHeight); // Actualizar ambos
+    css2dRenderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-// ==========================================================
-// --- FUNCIONES COMPLETAS createThemeObject y createIslandCenterObject ---
-// ==========================================================
 function createThemeObject(theme, color) {
     let obj;
     const material = new THREE.MeshPhongMaterial({ color: color, shininess: 100 });

@@ -3,6 +3,7 @@ $host = "localhost";
 $user = "root";
 $pass = "";
 $db   = "AppCurso";
+
 $conexion = mysqli_connect($host, $user, $pass, $db);
 
 if (!$conexion) {
@@ -12,9 +13,4 @@ if (!$conexion) {
     echo "</div>";
     die();
 }
-
-echo "<div style='color: green; font-family: sans-serif;'>";
-echo "<h3>✅ ¡Conexión completada con éxito!</h3>";
-echo "Te has conectado a la base de datos: <strong>$db</strong>";
-echo "</div>";
 ?>

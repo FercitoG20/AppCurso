@@ -2,16 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterButtons = document.querySelectorAll('.filter-btn');
     const projectCards = document.querySelectorAll('.project-card');
     const scrollBar = document.getElementById('scroll-bar');
-
-    // 1. Barra de progreso de scroll
     window.addEventListener('scroll', () => {
         const winScroll = document.documentElement.scrollTop;
         const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrolled = (winScroll / height) * 100;
         if(scrollBar) scrollBar.style.width = scrolled + "%";
     });
-
-    // 2. Filtrado de proyectos
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
             filterButtons.forEach(btn => btn.classList.remove('active'));

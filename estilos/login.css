@@ -1,8 +1,3 @@
-/*
-  COPIA Y PEGA AQUÍ TODO EL CÓDIGO CSS DE TU LOGIN.HTML
-  (Desde :root { ... } hasta @keyframes spin{ ... } )
-*/
-
 :root{
   --accent:#6C63FF;
   --accent-2:#8b5cf6;
@@ -113,6 +108,5 @@ label{ display:block; font-size:.95rem; margin:0 0 6px 2px; color:#e9edff }
 .hint{ text-align:center; color:var(--soft); font-size:.9rem; margin-top:8px }
 .footer{ margin-top:16px; color:var(--soft); text-align:center; font-size:.86rem }
 
-/* micro tip */
 .tip{ display:flex; align-items:center; gap:8px; font-size:.9rem; color:#cfd6ff; margin-top:8px }
 .tip .ok{ width:8px; height:8px; border-radius:50%; background:var(--ok); box-shadow:0 0 0 4px rgba(34,197,94,.15) }

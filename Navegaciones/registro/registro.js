@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('registerForm');
     const scrollBar = document.getElementById('scroll-bar');
-
-    // Progress Bar
     window.addEventListener('scroll', () => {
         const winScroll = document.documentElement.scrollTop;
         const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -10,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if(scrollBar) scrollBar.style.width = scrolled + "%";
     });
 
-    // Validación de contraseñas
     if (registerForm) {
         registerForm.addEventListener('submit', (e) => {
             const pass = document.getElementById('password').value;
@@ -29,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Función para ver contraseña
 function toggleView(id) {
     const input = document.getElementById(id);
     const icon = event.currentTarget.querySelector('i');

@@ -11,65 +11,9 @@ $pagina_actual = 'registro';
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="../../home.css">
     <link rel="stylesheet" href="../login/login.css"> 
+    <link rel="stylesheet" href="registro.css"> 
     
-    <style>
-        /* --- ESTILOS DEL MODAL MEJORADO --- */
-        .modal-overlay {
-            display: none; 
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease;
-        }
 
-        .modal-card {
-            background: white;
-            width: 90%;
-            max-width: 400px;
-            padding: 35px;
-            border-radius: 28px;
-            text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-            transform: scale(0.8);
-            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes popIn { to { transform: scale(1); } }
-
-        .modal-icon-circle {
-            width: 80px;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-        }
-
-        /* Colores dinámicos para el modal */
-        .modal-error .modal-icon-circle { background: rgba(255, 71, 87, 0.1); color: #ff4757; }
-        .modal-success .modal-icon-circle { background: rgba(46, 213, 115, 0.1); color: #2ed573; }
-
-        .modal-card h3 { color: #2d3436; font-size: 1.6rem; margin-bottom: 10px; font-weight: 800; }
-        .modal-card p { color: #636e72; line-height: 1.6; margin-bottom: 25px; }
-
-        .modal-btn {
-            background: #00bcd4;
-            color: white; border: none;
-            padding: 14px 30px; border-radius: 12px;
-            font-weight: 700; cursor: pointer;
-            transition: 0.3s; width: 100%; font-size: 1rem;
-        }
-
-        .modal-btn:hover { background: #0097a7; transform: translateY(-2px); }
-    </style>
 </head>
 <body>
 
@@ -180,7 +124,6 @@ $pagina_actual = 'registro';
 
         function closeModal() {
             modal.style.display = 'none';
-            // Si fue éxito, al cerrar mandamos al login
             if(card.classList.contains('modal-success')) {
                 window.location.href = '../login/login.php';
             }

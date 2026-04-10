@@ -9,3 +9,17 @@ CREATE TABLE IF NOT EXISTS usuarios (
     rol ENUM('estudiante', 'admin') DEFAULT 'estudiante',
     ultimo_acceso DATETIME DEFAULT NULL
 ) ENGINE=InnoDB;
+
+CREATE TABLE progreso_usuario (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT(11) NOT NULL,
+    nombre_alumno VARCHAR(100),
+    grado INT(11) DEFAULT 1,
+    isla_id INT(11),
+    nombre_isla VARCHAR(100),
+    juego_id INT(11),
+    nombre_juego VARCHAR(100),
+    intentos INT(11) DEFAULT 1,
+    fecha_completado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+);

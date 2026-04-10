@@ -1,37 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- REFERENCIAS AL DOM ---
     const codeInput = document.getElementById('code-input');
     const runButton = document.getElementById('run-button');
     const resetButton = document.getElementById('reset-button');
     const clearLogButton = document.getElementById('clear-log');
-    
-    // UI del juego
     const triesCountEl = document.getElementById('tries-count');
     const missionLogEl = document.getElementById('mission-log');
     const victoryModal = document.getElementById('victory-modal');
     const gameoverModal = document.getElementById('gameover-modal');
     const gameoverReasonEl = document.getElementById('gameover-reason');
     const gameContainer = document.getElementById('game-container');
-    
-    // Elementos del Portal
     const portalVortex = document.getElementById('portal-vortex');
     const rune1Display = document.getElementById('rune-1');
     const rune2Display = document.getElementById('rune-2');
-
-    // Botones de comandos
     const btnFunction = document.getElementById('btn-function');
     const btnReturn = document.getElementById('btn-return');
     const btnLet = document.getElementById('btn-let');
     const btnPortal = document.getElementById('btn-portal');
-    
-    // Botones de Navegación
     const backToTutorialButton = document.getElementById('back-to-tutorial');
     const backToMapButton = document.getElementById('back-to-map');
     const nextLevelButton = document.getElementById('next-level-button');
     const retryButton = document.getElementById('retry-button');
-
-    // --- REFERENCIAS TUTORIAL ---
     const tutorialModal = document.getElementById('tutorial-modal');
     const startButton = document.getElementById('start-button');
     const tutorialSteps = document.querySelectorAll('.tutorial-step');
@@ -40,17 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const tutorialStepCounter = document.getElementById('tutorial-step-counter');
     const TOTAL_STEPS = tutorialSteps.length;
     let currentStep = 1;
-
-    // --- CONFIGURACIÓN ---
     const MAX_VIDAS = 3;
     const PALABRA_1 = 'LUX';
     const PALABRA_2 = 'NOVA';
-    
-    // --- VARIABLES DEL JUEGO ---
     let isRunning = false;
     let vidasRestantes = MAX_VIDAS;
-
-    // --- LÓGICA DEL TUTORIAL ANIMADO ---
     function showTutorialStep(stepNumber) {
         currentStep = stepNumber;
         tutorialSteps.forEach((step, index) => {
@@ -73,7 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentStep > 1) showTutorialStep(currentStep - 1);
     });
     
-    // --- FUNCIONES DEL JUEGO ---
 
     function logToMission(message, type = 'info') {
         const entry = document.createElement('div');
@@ -118,7 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
         triesCountEl.style.color = (vidasRestantes <= 1) ? '#e74c3c' : '#ffffff';
     }
 
-    // --- POPUPS ---
     
     function showVictoryModal() {
         logToMission(`🎉 ¡VICTORIA! ¡Portal Activado!`, 'success');
@@ -139,17 +120,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function showTutorial() {
         tutorialModal.classList.remove('hidden');
-        showTutorialStep(1); // Reiniciar a la primera página
+        showTutorialStep(1);
     }
 
-    // --- COMANDOS ---
     
     function addCommandToTextarea(command) {
         codeInput.value += command + '\n';
         codeInput.focus();
     }
 
-    // --- LÓGICA DE EJECUCIÓN ---
     
     function onRunProgram() {
         if(isRunning) return;
@@ -164,15 +143,12 @@ document.addEventListener('DOMContentLoaded', () => {
         runButton.disabled = true;
         resetPortalVisuals();
 
-        // --- Sandboxing ---
-        // Aquí definimos las variables y funciones que el código del usuario podrá usar
         
-        let funcionTraductora; // Almacenará la función del usuario
+        let funcionTraductora;
         let portalActivado = false;
         let p1_recibida = undefined;
         let p2_recibida = undefined;
 
-        // Comando base que el jugador DEBE llamar
         function activar_portal(p1, p2) {
             portalActivado = true;
             p1_recibida = p1;
@@ -180,29 +156,14 @@ document.addEventListener('DOMContentLoaded', () => {
             logToMission(`...Recibida llamada a activar_portal con: '${p1}', '${p2}'`, 'info');
         }
 
-        // --- Ejecución ---
         try {
-            // Un truco para capturar la función definida por el usuario
-            // y las variables let
-            
-            // 1. Ejecutar el código del usuario en un scope que podamos inspeccionar
-            // Usamos 'new Function' para crear un scope controlado
-            // Inyectamos 'activar_portal'
             const userScript = new Function('activar_portal', userCode);
-            
-            // 2. Llamamos al script del usuario
             userScript(activar_portal);
 
         } catch (e) {
-            // Captura errores de sintaxis
             failAttempt(e.message);
             return;
         }
-
-        // --- Verificación ---
-        
-        // El `eval` es una forma de "robar" la función que el usuario definió
-        // para poder probarla nosotros mismos.
         let traductor;
         try {
             traductor = eval(`(function() { ${userCode}; return traducir_runa; })()`);
@@ -211,8 +172,6 @@ document.addEventListener('DOMContentLoaded', () => {
             failAttempt("No se pudo encontrar la función 'traducir_runa'. ¿La escribiste bien?");
             return;
         }
-
-        // Probamos la función del usuario
         let test1 = traductor('alpha');
         let test2 = traductor('beta');
         logToMission(`...Probando traductor('alpha')... Devolvió: '${test1}'`, 'return');
@@ -228,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         
-        // Actualizar visuales del portal
         rune1Display.textContent = p1_recibida;
         rune2Display.textContent = p2_recibida;
 
@@ -255,15 +213,10 @@ document.addEventListener('DOMContentLoaded', () => {
             logToMission(`Vidas restantes: ${vidasRestantes}.`, 'error');
         }
     }
-
-    // --- NAVEGACIÓN ---
     function goToMap() {
         logToMission("🗺️ Regresando al mapa...", 'info');
-        // Ajusta esta ruta
         window.location.href = '../../mapa1.html';
     }
-
-    // --- EVENT LISTENERS ---
     
     codeInput.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
@@ -284,16 +237,13 @@ document.addEventListener('DOMContentLoaded', () => {
         logToMission("Portal listo. Esperando palabras de poder.", 'info');
     });
     
-    // Listeners de Modales y Navegación
     startButton.addEventListener('click', startGame);
     retryButton.addEventListener('click', resetGame);
     backToTutorialButton.addEventListener('click', showTutorial);
     backToMapButton.addEventListener('click', goToMap);
     
-    // El botón final te lleva al mapa
     nextLevelButton.addEventListener('click', goToMap); 
     
-    // --- INICIALIZACIÓN ---
-    showTutorialStep(1); // Empezar en el paso 1 del tutorial
-    tutorialModal.classList.remove('hidden'); // Mostrar el tutorial
+    showTutorialStep(1);
+    tutorialModal.classList.remove('hidden');
 });
