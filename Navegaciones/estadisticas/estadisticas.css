@@ -1,0 +1,230 @@
+.dashboard-wrapper {
+    max-width: 1200px;
+    margin: 100px auto 100px auto;
+    padding: 0 20px;
+    min-height: 70vh; /* Asegura que no se pegue el footer si no hay contenido */
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.dashboard-title {
+    font-size: 2.8rem;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.dashboard-header p {
+    color: #a0aec0;
+    font-size: 1.1rem;
+}
+
+/* BARRA DE PROGRESO GLOBAL */
+.progress-section {
+    padding: 25px;
+    border-radius: 15px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.progress-info h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.progress-info span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #00ff88;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.progress-track {
+    width: 100%;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff88, #00c3ff);
+    border-radius: 10px;
+    transition: width 1.5s ease-in-out;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+}
+
+/* KPIs GRID */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.kpi-card {
+    display: flex;
+    align-items: center;
+    padding: 25px;
+    border-radius: 15px;
+    gap: 20px;
+    transition: transform 0.3s;
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+}
+
+.kpi-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background: rgba(0, 255, 136, 0.1);
+    color: #00ff88;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.kpi-data h4 {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #a0aec0;
+    text-transform: uppercase;
+}
+
+.kpi-data h2 {
+    margin: 5px 0 0 0;
+    font-size: 2rem;
+    color: #fff;
+}
+
+/* ZONA DE GRÁFICAS */
+.charts-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Líneas más grande que la dona */
+    gap: 20px;
+}
+
+.chart-container {
+    padding: 25px;
+    border-radius: 15px;
+    position: relative;
+}
+
+.chart-container h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+}
+
+.doughnut-wrapper {
+    position: relative;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+}
+
+/* TABLA DE ACTIVIDAD */
+.activity-section {
+    padding: 25px;
+    border-radius: 15px;
+}
+
+.activity-section h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.activity-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.activity-table th, .activity-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #e2e8f0;
+}
+
+.activity-table th {
+    color: #00ff88;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.activity-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.txt-muted {
+    color: #718096 !important;
+}
+
+/* ESTADO VACÍO (SIN JUGAR) */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    border-radius: 15px;
+}
+
+.empty-state i {
+    font-size: 5rem;
+    color: #3498db;
+    margin-bottom: 15px;
+    display: inline-block;
+    animation: float 3s ease-in-out infinite;
+}
+
+.empty-state h2 {
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: #a0aec0;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+/* Agrega esto cerca de donde tienes .doughnut-wrapper */
+.line-wrapper {
+    position: relative;
+    height: 250px; /* Misma altura que la dona para que se vean parejos */
+    width: 100%;
+}
