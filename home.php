@@ -2,11 +2,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ProgFundamentos | Inicio</title>
-<link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
-<link rel="stylesheet" href="home.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProgFundamentos | Inicio</title>
+  <link rel="manifest" href="/AppCurso/manifest.json">
+  <meta name="theme-color" content="#0284c7">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="home.css">
 </head>
 <body class="dark-mode"> 
 <div class="progress-container"><div class="progress-bar" id="scroll-bar"></div></div>
@@ -85,5 +87,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <script src="home.js"></script> 
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/AppCurso/sw.js')
+    .then(reg => {
+      console.log('✅ Service Worker registrado con éxito en:', reg.scope);
+    })
+    .catch(err => {
+      console.error('❌ Error al registrar el Service Worker:', err);
+    });
+}
+</script>
 </body>
 </html>

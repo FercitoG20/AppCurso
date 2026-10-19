@@ -21,7 +21,11 @@ if (session_status() === PHP_SESSION_NONE) {
             ?>
         </span>
     <?php endif; ?>
-            
+
+    <div class="mobile-menu-btn" id="mobile-menu-btn">
+        <i class="ri-menu-line"></i>
+    </div>
+
     <div class="nav-menu" id="nav-menu">
         <a href="/AppCurso/home.php" class="nav-link <?php echo (isset($pagina_actual) && $pagina_actual == 'home') ? 'active-page' : ''; ?>">INICIO</a>
         <a href="/AppCurso/Navegaciones/temario/temario.php" class="nav-link">TEMARIO</a>

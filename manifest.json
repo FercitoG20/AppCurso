@@ -1,0 +1,25 @@
+{
+  "name": "ProgFundamentos - Plataforma de Aprendizaje",
+  "short_name": "ProgFundamentos",
+  "start_url": "/AppCurso/home.php",
+  "scope": "/AppCurso/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#0284c7",
+  "orientation": "portrait",
+  "description": "Plataforma interactiva para aprender fundamentos de programación.",
+  "icons": [
+    {
+      "src": "/AppCurso/imagenes/Bachiller3.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/AppCurso/imagenes/Bachiller2.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
